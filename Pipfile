@@ -6,6 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+advent-cli = "*"
+advent-of-code-data = "*"
+utils = "*"
+z3-solver = "*"
 
 [requires]
 python_version = "3.9"

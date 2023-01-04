@@ -74,4 +74,4 @@ for draw in draws:
         for index in indices:
             print(f'Score: {boards[index.item(0)].score(draw)}, draw: {draw}, index: {index.item(0)}')
 
-print(f'Score second part: see above')  # TODO: better output
+print(f'Score second part: see above')
