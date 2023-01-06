@@ -1,0 +1,42 @@
+x,y,z=0
+
+input 1:
+x=15
+x=0 -> x=1
+y=25
+y=25
+y=26
+y=0
+y=inp1
+y=inp1+15
+y=0
+
+x=1, y,z=inp1+15
+
+input 2:
+x=15
+x=0
+x=1
+y=25
+y=26
+y=0
+y= w2
+y=w2+10
+z=w2+10
+
+x=0, y,z = w2+10
+
+input3:
+x=inp2+10
+x=mod(inp2+10, 26) + 12
+x= 0 (mod(something)+12 can never be input3)
+x = 1
+y = 0
+y = 25
+y = 26
+z = 26 * (inp2+10)
+y = 0
+y = inp3+2
+z = 26 * (w2+10) + inp3
+
+input4:

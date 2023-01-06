@@ -1,3 +1,6 @@
+### Files to ignore
+*/ignore*
+
 ### Python template
 .idea
 
