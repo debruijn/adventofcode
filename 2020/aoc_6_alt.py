@@ -1,5 +1,5 @@
 from typing import Union
-from util import timing, rows_to_chunks, list_set
+from util.util import timing, rows_to_chunks, list_set
 from functools import reduce
 
 

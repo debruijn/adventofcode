@@ -1,5 +1,5 @@
 from typing import Union
-from util import timing
+from util.util import timing
 
 from aoc_15 import Datapoint
 
