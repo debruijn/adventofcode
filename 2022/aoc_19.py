@@ -1,6 +1,6 @@
 import itertools
 from typing import Union
-from util import timing
+from util.util import timing
 import tqdm
 
 
@@ -143,7 +143,7 @@ def run_all(example_run: Union[int, bool]):
     best_part1 = run_optimization(blueprints, T=24, keep_queue=50, trim_queue=False)  # 10 mins
     result_part1 = sum([(i+1) * best_part1[i] for i in range(len(best_part1))])
     best_part2 = run_optimization(blueprints[:3], T=32, keep_queue=250, trim_queue=False)
-    best_part2 = run_optimization(blueprints, T=32, keep_queue=250, trim_queue=True)
+    # best_part2 = run_optimization(blueprints, T=32, keep_queue=250, trim_queue=True)
     part2_prod = 1
     for x in best_part2:
         part2_prod *= x

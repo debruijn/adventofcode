@@ -1,5 +1,5 @@
 from typing import Union
-from util import timing
+from util.util import timing
 import z3 as z3
 
 from aoc_15_alt import find_number_of_points_known_to_not_have_beacon, Datapoint

@@ -1,6 +1,6 @@
 import functools
 from typing import Union
-from util import timing
+from util.util import timing
 
 
 debug = False

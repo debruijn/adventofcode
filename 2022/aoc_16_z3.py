@@ -1,6 +1,6 @@
 from collections import defaultdict
 from typing import Union
-from util import timing
+from util.util import timing
 import math
 import z3
 

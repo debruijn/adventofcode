@@ -4,7 +4,7 @@ from typing import Union
 
 import numpy as np
 
-from util import timing
+from util.util import timing
 import math
 import copy
 
