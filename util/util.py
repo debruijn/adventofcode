@@ -80,6 +80,7 @@ class ProcessInput:
 # - Input process function that returns a list of ints by block (until empty row)
 # - Input process function that converts a block into a single row
 # - Input process function that can return a list based on filtering out some pattern
+# - Merge with "rows_to_chunks" above
 
 
 def run_day(run_func, example_runs):
