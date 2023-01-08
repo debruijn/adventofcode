@@ -6,6 +6,7 @@ create:
 	# Copy template script and adjust x to day number
 	cp util/aoc_x.py ${YEAR}/aoc_${DAY}.py
 	sed -i 's/_x/_${DAY}/g' ${YEAR}/aoc_${DAY}.py
+	sed -i 's/day=None/day=${DAY}/g' ${YEAR}/aoc_${DAY}.py
 
 	# Copy empty data file
 	cp util/aoc_x_data ${YEAR}/aoc_${DAY}_data
