@@ -23,7 +23,7 @@ def find_contiguous_set(data, idnum):
 @timing
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=9).as_int()
+    data = ProcessInput(example_run=example_run, day=9).as_int().data
 
     result_part1, idnum = check_numbers(data, 5 if example_run else 25)
     result_part2, inds, k = find_contiguous_set(data, idnum)
