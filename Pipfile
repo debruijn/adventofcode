@@ -13,6 +13,7 @@ advent-cli = "*"
 advent-of-code-data = "*"
 utils = "*"
 z3-solver = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.9"
