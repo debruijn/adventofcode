@@ -103,6 +103,7 @@ def str_remove(string, substring):
 # - Process function to remove something following a regex pattern per row
 
 
+@timing
 def run_day(run_func, example_runs):
 
     [print_res(run_func(example_run=i), example_run=i) for i in example_runs]
@@ -113,7 +114,7 @@ def run_day(run_func, example_runs):
 
 
 def print_res(results, example_run):
-    print(f'Results for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
+    print(f'\nResults for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
     print(f' Result of part 1: {results[0]}')
     print(f' Result of part 2: {results[1]}')
 

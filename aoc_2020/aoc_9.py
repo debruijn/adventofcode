@@ -1,5 +1,5 @@
 from typing import Union
-from util.util import timing, ProcessInput, run_day
+from util.util import ProcessInput, run_day
 from itertools import combinations
 
 debug = False
@@ -20,7 +20,6 @@ def find_contiguous_set(data, idnum):
                 return min(nums) + max(nums), inds, k
 
 
-@timing
 def run_all(example_run: Union[int, bool]):
 
     data = ProcessInput(example_run=example_run, day=9).as_int().data

@@ -3,7 +3,7 @@ import operator
 import itertools
 from collections import defaultdict
 from typing import Union
-from util.util import timing, ProcessInput, run_day
+from util.util import ProcessInput, run_day
 
 
 def get_permutations(nr):
@@ -23,7 +23,6 @@ def get_permutations_sim(nr):
     return len(checked_options)
 
 
-@timing
 def run_all(example_run: Union[int, bool]):
 
     data = ProcessInput(example_run=example_run, day=10).as_int().sort().data
