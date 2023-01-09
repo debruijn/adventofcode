@@ -40,7 +40,7 @@ def run_all(example_run: Union[int, bool]):
 
     extra_out = {'Number of adapters': len(data),
                  'Number of stretches of 1 diff in a row': len(count_1diffs),
-                 'Max numbre of 1 diff in a row': max(count_1diffs)}
+                 'Max number of 1 diff in a row': max(count_1diffs)}
 
     return result_part1, result_part2, extra_out
 
