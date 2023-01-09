@@ -9,7 +9,7 @@ def timing(f):
         ts = time()
         result = f(*args, **kw)
         te = time()
-        print(f'Runtime for function {f.__name__}: {te-ts:2.4f} sec\n\n')
+        print(f'\n\nRuntime for function {f.__name__}: {te-ts:2.4f} sec')
         return result
     return wrap
 
@@ -45,10 +45,12 @@ class ProcessInput:
             self.data = read_file(example_run, loc, day)
 
     def as_int(self):
-        return [int(row) for row in self.data]
+        self.data = [int(row) for row in self.data]
+        return self
 
     def as_list_of_ints(self, pattern=" "):
-        return [[int(s) for s in row.split(pattern) if s.isdigit()] for row in self.data]
+        self.data = [[int(s) for s in row.split(pattern) if s.isdigit()] for row in self.data]
+        return self
 
     def as_list_of_ints_blockwise(self, pattern=" "):
         lists_of_ints = [[int(s) for s in row.split(pattern) if s.isdigit()] for row in self.data]
@@ -61,7 +63,8 @@ class ProcessInput:
                 blocks.append(curr_block)
                 curr_block = []
         blocks.append(curr_block)
-        return curr_block
+        self.data = curr_block
+        return self
 
     def as_list_of_strings_per_block(self, deliminator=""):
         blocks = []
@@ -73,7 +76,12 @@ class ProcessInput:
                 blocks.append(curr_block)
                 curr_block = []
         blocks.append(curr_block)
-        return curr_block
+        self.data = curr_block
+        return self
+
+    def sort(self):
+        self.data = sorted(self.data)
+        return self
 
 # Ideas:
 # - Input process function that returns a list of ints by row
@@ -93,11 +101,11 @@ def run_day(run_func, example_runs):
 
 
 def print_res(results, example_run):
-    print(f'\nResults for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
+    print(f'Results for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
     print(f' Result of part 1: {results[0]}')
     print(f' Result of part 2: {results[1]}')
 
     if results[2]:
-        print(f'\nDescriptives:')
+        print(f'Descriptives:')
         for key, val in results[2].items():
-            print(f'\n {key}: {val}')
+            print(f' {key}: {val}')

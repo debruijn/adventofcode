@@ -12,7 +12,7 @@ def run_all(example_run: Union[int, bool]):
     result_part1 = "TODO"
     result_part2 = "TODO"
 
-    extra_out = None  # TODO: create dict of additional things to have them printed
+    extra_out = {'Number of rows in input': len(data)}  # TODO: create dict of additional things to have them printed
 
     return result_part1, result_part2, extra_out
 
