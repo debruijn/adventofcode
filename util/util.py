@@ -1,5 +1,6 @@
 import pathlib
 from functools import wraps
+from itertools import accumulate
 from time import time
 
 
@@ -83,12 +84,23 @@ class ProcessInput:
         self.data = sorted(self.data)
         return self
 
+    def remove_substrings(self, substrings):
+        self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
+        return self
+
+
+def str_remove(string, substring):
+    return string.replace(substring, "")
+
+
 # Ideas:
 # - Input process function that returns a list of ints by row
 # - Input process function that returns a list of ints by block (until empty row)
 # - Input process function that converts a block into a single row
 # - Input process function that can return a list based on filtering out some pattern
 # - Merge with "rows_to_chunks" above
+# - Process function to remove particular substrings per row
+# - Process function to remove something following a regex pattern per row
 
 
 def run_day(run_func, example_runs):
