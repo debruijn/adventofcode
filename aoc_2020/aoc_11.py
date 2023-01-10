@@ -38,8 +38,7 @@ def run_all(example_run: Union[int, bool]):
     data = ProcessInput(example_run=example_run, day=11).data
     data = np.array([[0 if x == '.' else 1 for x in row] for row in data])
     seats = np.where(data == 1)
-    seats = list(zip(seats[0], seats[1]))
-    seats = set([complex(x[0], x[1]) for x in seats])
+    seats = set(itertools.starmap(complex, zip(seats[0], seats[1])))
     dim = data.shape
 
     # Slow implementation - was slow due to check each seat against each other (occupied) seat
