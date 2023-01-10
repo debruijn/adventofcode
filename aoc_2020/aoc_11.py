@@ -60,6 +60,10 @@ def run_all(example_run: Union[int, bool]):
     #
     # result_part1 = len(occupied)
 
+    # Part 1 and part 2 have two different implementations that could be swapped out:
+    # - Method 1 reconstructs occupied from an empty set in each iteration
+    # - Method 2 adjusts the existing set by removing/adding elements
+    # The methods are about the same in speed, also due to method 2 needing to copy the set into prev_occupied
     occupied = set()
     for _ in itertools.count():
         prev_occupied = occupied
@@ -67,7 +71,7 @@ def run_all(example_run: Union[int, bool]):
         for seat in seats:
             nbrs = get_neighbours(seat)
             sum_occ = sum(x in prev_occupied for x in nbrs)
-            if seat in prev_occupied and sum_occ < 4:  # To test: speed of copying occupied and adjusting it
+            if seat in prev_occupied and sum_occ < 4:
                 occupied.add(seat)
             elif seat not in prev_occupied and sum_occ == 0:
                 occupied.add(seat)
@@ -81,7 +85,7 @@ def run_all(example_run: Union[int, bool]):
         for seat in seats:
             nbrs = get_visible(seat, seats, dim)
             sum_occ = sum(x in prev_occupied for x in nbrs)
-            if seat in prev_occupied and sum_occ >= 5:  # To test: speed of copying occupied and adjusting it
+            if seat in prev_occupied and sum_occ >= 5:
                 occupied.remove(seat)
             elif seat not in prev_occupied and sum_occ == 0:
                 occupied.add(seat)
