@@ -14,6 +14,7 @@ advent-of-code-data = "*"
 utils = "*"
 z3-solver = "*"
 pytest = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.9"
