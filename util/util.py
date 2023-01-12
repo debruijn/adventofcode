@@ -1,3 +1,4 @@
+import functools
 import pathlib
 from functools import wraps
 from itertools import accumulate
@@ -85,7 +86,9 @@ class ProcessInput:
         return self
 
     def remove_substrings(self, substrings):
-        self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
+        #self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
+        self.data = [[x for x in accumulate(substrings, functools.partial(str.replace, __new=""), initial=row)][-1]
+                     for row in self.data]
         return self
 
 
