@@ -1,17 +1,45 @@
 from typing import Union
 from util.util import ProcessInput, run_day
+from collections import defaultdict
 
 debug = False
 
 
+def number_to_base(n, b):
+    # Generic function to convert numbers to a base format, and output as string
+    if n == 0:
+        return "0"
+    digits = []
+    while n:
+        digits.append(int(n % b))
+        n //= b
+    return "".join(str(x) for x in digits[::-1])
+
+
+def convert_to_36bit(str_i):
+    return "".join(["0"] * (36 - len(str_i))) + str_i
+
+
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=14).as_int().data
+    data = ProcessInput(example_run=example_run, day=14).data
 
-    result_part1 = "TODO"
+    memory_dict = defaultdict(str)
+    curr_mask = ''.join(['x']*32)  # TODO: can we do this simpler?
+    for row in data:
+        if row.startswith('mask'):
+            curr_mask = row.replace('mask = ', '')
+        else:
+            row = row.replace('mem[', '').split('] = ')
+            num_as_binary = convert_to_36bit(number_to_base(int(row[1]), 2))
+            memory_dict[row[0]] = "".join([num_as_binary[x] if curr_mask[x] == 'X' else curr_mask[x]
+                                           for x in range(len(curr_mask))])
+
+    result_part1 = sum(int(x, 2) for x in memory_dict.values())
     result_part2 = "TODO"
 
-    extra_out = {'Number of rows in input': len(data)}  # TODO: create dict of additional things to have them printed
+    extra_out = {'Number of rows in input': len(data),
+                 'Number of unique vals': len(memory_dict)}
 
     return result_part1, result_part2, extra_out
 
