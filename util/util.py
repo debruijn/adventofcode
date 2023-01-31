@@ -68,17 +68,17 @@ class ProcessInput:
         self.data = curr_block
         return self
 
-    def as_list_of_strings_per_block(self, deliminator=""):
+    def as_list_of_strings_per_block(self, deliminator="", line_deliminator='\n'):
         blocks = []
-        curr_block = []
+        curr_block = ""
         for row in self.data:
-            if row != "":
-                curr_block += deliminator + row
+            if row != deliminator:
+                curr_block += line_deliminator + row
             else:
-                blocks.append(curr_block)
-                curr_block = []
-        blocks.append(curr_block)
-        self.data = curr_block
+                blocks.append(curr_block.split(line_deliminator)[1:])
+                curr_block = ""
+        blocks.append(curr_block.split(line_deliminator)[1:])
+        self.data = blocks
         return self
 
     def sort(self):
