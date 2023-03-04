@@ -37,11 +37,10 @@ def get_floating_bitmasks(str_i):
 
 
 def run_all(example_run: Union[int, bool]):
-
     data = ProcessInput(example_run=example_run, day=14).data
 
     memory_dict = defaultdict(str)
-    curr_mask = ''.join(['x']*32)
+    curr_mask = ''.join(['x'] * 32)
     for row in data:
         if row.startswith('mask'):
             curr_mask = row.replace('mask = ', '')
@@ -54,10 +53,10 @@ def run_all(example_run: Union[int, bool]):
     result_part1 = sum(int(x, 2) for x in memory_dict.values())
 
     if example_run == 1:
-        result_part2 = "Not feasible for this example"
+        result_part2 = "Not feasible"
     else:
         memory_dict2 = defaultdict(int)
-        curr_mask = ''.join(['x']*32)
+        curr_mask = ''.join(['x'] * 32)
         for row in data:
             if row.startswith('mask'):
                 curr_mask = row.replace('mask = ', '')
@@ -65,7 +64,7 @@ def run_all(example_run: Union[int, bool]):
                 row = row.replace('mem[', '').split('] = ')
                 num_as_binary = convert_to_36bit(number_to_base(int(row[0]), 2))
                 bitmasks_applied = "".join([num_as_binary[x] if curr_mask[x] == '0' else curr_mask[x]
-                                               for x in range(len(curr_mask))])
+                                            for x in range(len(curr_mask))])
                 floating_locations = get_floating_bitmasks(bitmasks_applied)
                 floating_locations = flatten(floating_locations)
                 for loc in floating_locations:
