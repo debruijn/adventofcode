@@ -2,7 +2,7 @@ import itertools
 from typing import Union
 from util.util import timing
 import tqdm
-
+import numpy as np
 
 debug = False
 
@@ -10,8 +10,8 @@ debug = False
 def sort_heuristic(state):
     # Rough guess for sorting: give each resource weight to cost of robot converted to ores (state[1] = prices)
     clay_price = state[1][1]
-    obsidian_price = (state[1][3]*clay_price + state[1][2])
-    geode_price = (state[1][5]*obsidian_price + state[1][4])
+    obsidian_price = (state[1][3] * clay_price + state[1][2])
+    geode_price = (state[1][5] * obsidian_price + state[1][4])
 
     # Then calculate rough value of state by looking at total collected resources (no matter what they have been spent
     # on) multiplied by these values. (state[3] = cum_resources)
@@ -19,7 +19,6 @@ def sort_heuristic(state):
 
 
 def queue_trim(queue):
-
     # Remove those that are the same
     for i, j in itertools.combinations(queue, 2):
         if i in queue and j in queue:
@@ -34,6 +33,60 @@ def queue_trim(queue):
     return queue
 
 
+def is_pareto_efficient_dumb(costs):
+    """
+    Find the pareto-efficient points
+    :param costs: An (n_points, n_costs) array
+    :return: A (n_points, ) boolean array, indicating whether each point is Pareto efficient
+    """
+    is_efficient = np.ones(costs.shape[0], dtype=bool)
+    for i, c in enumerate(costs):
+        is_efficient[i] = np.all(np.any(costs[:i] < c, axis=1)) and np.all(np.any(costs[i + 1:] < c, axis=1))
+    return is_efficient
+
+
+# Fairly fast for many datapoints, less fast for many costs, somewhat readable
+def is_pareto_efficient_simple(costs):
+    """
+    Find the pareto-efficient points
+    :param costs: An (n_points, n_costs) array
+    :return: A (n_points, ) boolean array, indicating whether each point is Pareto efficient
+    """
+    is_efficient = np.ones(costs.shape[0], dtype=bool)
+    for i, c in enumerate(costs):
+        if is_efficient[i]:
+            is_efficient[is_efficient] = np.any(costs[is_efficient] > c, axis=1)  # Keep any point with a higher benefit
+            is_efficient[i] = True  # And keep self
+    return is_efficient
+
+
+# Faster than is_pareto_efficient_simple, but less readable.
+def is_pareto_efficient(costs, return_mask=True):
+    """
+    Find the pareto-efficient points
+    :param costs: An (n_points, n_costs) array
+    :param return_mask: True to return a mask
+    :return: An array of indices of pareto-efficient points.
+        If return_mask is True, this will be an (n_points, ) boolean array
+        Otherwise it will be a (n_efficient_points, ) integer array of indices.
+    """
+    is_efficient = np.arange(costs.shape[0])
+    n_points = costs.shape[0]
+    next_point_index = 0  # Next index in the is_efficient array to search for
+    while next_point_index < len(costs):
+        nondominated_point_mask = np.any(costs > costs[next_point_index], axis=1)
+        nondominated_point_mask[next_point_index] = True
+        is_efficient = is_efficient[nondominated_point_mask]  # Remove dominated points
+        costs = costs[nondominated_point_mask]
+        next_point_index = np.sum(nondominated_point_mask[:next_point_index]) + 1
+    if return_mask:
+        is_efficient_mask = np.zeros(n_points, dtype=bool)
+        is_efficient_mask[is_efficient] = True
+        return is_efficient_mask
+    else:
+        return is_efficient
+
+
 def optimal_robot_choice(T, prices, robots, resources, keep_queue, trim_queue):
     # BF algorithm that trims the queue for each T, so only consider {keep_queue} "most likely" candidates.
     # Max calculations: T*keep_queue
@@ -43,7 +96,7 @@ def optimal_robot_choice(T, prices, robots, resources, keep_queue, trim_queue):
     # - Buy a robot: robots + new one, increase resources but reduce by price, decrease T
 
     queue = list()
-    default_to_check = (True,)*4
+    default_to_check = (True,) * 4
     queue.append((T, prices, robots, resources, resources, default_to_check))
     curr_depth = T
     best = 0
@@ -54,18 +107,23 @@ def optimal_robot_choice(T, prices, robots, resources, keep_queue, trim_queue):
         if t < curr_depth:
             if debug:
                 print(f'{curr_depth}: {len(queue)}')
+            print(f'{curr_depth}: {len(queue)}')
 
             # TODO: experiment with dropping all elements from queue that are clearly worse than some other
             #   (so resources and robots not higher and at least one smaller than at least one other state)
             #   (oapackage or own implementation)
-            # We need to sort our queue and then keep top to not let it explode
             if len(queue) > 0:
-                print(f"{t}: {len(queue)}, {queue[:4]}")
+                efficient_ind = is_pareto_efficient_simple(np.array([x[2] + x[4] for x in queue]))
+                queue = [queue[i] for i in range(len(queue)) if efficient_ind[i]]
+
+            # We need to sort our queue and then keep top to not let it explode
+            # if len(queue) > 50:
+            #     print(f"{t}: {len(queue)}, {queue[:4]}")
             if len(queue) > keep_queue:
                 queue.sort(key=sort_heuristic, reverse=True)  # Could convert to set; unlikely to be relevant here
                 queue = queue[:keep_queue]
-            if trim_queue:  # Can also do this before the heuristic
-                queue = queue_trim(queue)
+            # if trim_queue:  # Can also do this before the heuristic
+            #     queue = queue_trim(queue)
             if debug:
                 print(f'       {len(queue)}')
             curr_depth = t
@@ -92,7 +150,7 @@ def optimal_robot_choice(T, prices, robots, resources, keep_queue, trim_queue):
             robots_i[0] += 1
             resources_i = list(new_resources)
             resources_i[0] -= prices[0]
-            queue.append((t-1, prices, tuple(robots_i), new_cum_mined, tuple(resources_i), default_to_check))
+            queue.append((t - 1, prices, tuple(robots_i), new_cum_mined, tuple(resources_i), default_to_check))
         if to_check[1] and (prices[1] <= resources[0]):  # Clay robot
             robots_i = list(robots)
             robots_i[1] += 1
@@ -131,19 +189,18 @@ def run_optimization(blueprints, T, keep_queue=500, trim_queue=False):
 
 @timing
 def run_all(example_run: Union[int, bool]):
-
     file = f'aoc_19_exampledata{example_run}' if example_run else 'aoc_19_data'
     with open(file) as f:
         data = f.readlines()
     adj_data = [row.rstrip('\n') for row in data]
 
     blueprints = [[int(x) for x in row.replace('Blueprint ', '').replace(': Each ore robot costs', '').
-                  replace('ore. Each clay robot costs ', '').replace('ore. Each obsidian robot costs ', '').
-                  replace('ore and ', '').replace('clay. Each geode robot costs ', '').replace('ore and ', '').
-                  replace(' obsidian.', '').split(' ')] for row in adj_data]
+    replace('ore. Each clay robot costs ', '').replace('ore. Each obsidian robot costs ', '').
+    replace('ore and ', '').replace('clay. Each geode robot costs ', '').replace('ore and ', '').
+    replace(' obsidian.', '').split(' ')] for row in adj_data]
 
     best_part1 = run_optimization(blueprints, T=24, keep_queue=50, trim_queue=False)  # 10 mins
-    result_part1 = sum([(i+1) * best_part1[i] for i in range(len(best_part1))])
+    result_part1 = sum([(i + 1) * best_part1[i] for i in range(len(best_part1))])
     best_part2 = run_optimization(blueprints[:3], T=32, keep_queue=250, trim_queue=False)
     # best_part2 = run_optimization(blueprints, T=32, keep_queue=250, trim_queue=True)
     part2_prod = 1
