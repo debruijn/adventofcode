@@ -5,15 +5,13 @@ from collections import defaultdict
 debug = False
 
 
-def run_all(example_run: Union[int, bool]):
+def func_game(data, num_iter):
 
-    data = ProcessInput(example_run=example_run, day=15).as_list_of_ints(',').data
-
-    result_part1 = []
+    result = []
     for row in data:
         numbers = defaultdict(lambda: (-1, 0))
         last_num = -1
-        for i in range(2020):
+        for i in range(num_iter):
             if i < len(row):
                 numbers[row[i]] = (i, numbers[row[i]][0])
                 last_num = row[i]
@@ -26,8 +24,17 @@ def run_all(example_run: Union[int, bool]):
                     numbers[last_num] = (i, numbers[last_num][0])
             if debug:
                 print(f"{i+1}:  {last_num}, {numbers}")
-        result_part1.append(last_num)
-    result_part2 = "TODO"
+        result.append(last_num)
+
+    return result
+
+
+def run_all(example_run: Union[int, bool]):
+
+    data = ProcessInput(example_run=example_run, day=15).as_list_of_ints(',').data
+
+    result_part1 = func_game(data, 2020)
+    result_part2 = func_game(data, 30000000)
 
     extra_out = {'Number of rows in input': len(data)}  # TODO: create dict of additional things to have them printed
 
@@ -35,4 +42,4 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1, 2])
+    run_day(run_all, [1, ])  # [1, 2] but 2 is very slow
