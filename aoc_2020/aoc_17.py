@@ -34,7 +34,7 @@ def conway_cubes(grid, n_dim, n_cycles):
                 dims = grid.shape
 
         old_grid = grid.copy()
-        for x_vec in list(itertools.product(*[range(dims[i]) for i in range(n_dim)])):
+        for x_vec in list(itertools.product(*[range(dim) for dim in dims])):
             if old_grid[x_vec] == 1:
                 grid[x_vec] = 1 if count_neighbours(old_grid, x_vec, n_dim) - 1 in (2, 3) else 0
             else:
