@@ -26,7 +26,6 @@ def check_expression(expression, rules, checked_rules):
     return expression, False
 
 
-
 def run_all(example_run: Union[int, bool]):
 
     data = ProcessInput(example_run=example_run, day=19).as_list_of_strings_per_block().data
