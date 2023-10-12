@@ -1,4 +1,4 @@
-from aoc_2020 import aoc_9, aoc_10, aoc_11, aoc_12, aoc_13, aoc_14, aoc_15, aoc_16, aoc_17, aoc_18, aoc_19
+from aoc_2020 import aoc_9, aoc_10, aoc_11, aoc_12, aoc_13, aoc_14, aoc_15, aoc_16, aoc_17, aoc_18, aoc_19, aoc_20
 import pytest
 
 import os
@@ -17,10 +17,11 @@ os.chdir('../../aoc_2020')
                           (aoc_16, [(71, 1)], (27870, 3173135507987)),
                           (aoc_17, [(112, 848)], (315, 1520)),
                           (aoc_18, [(71, 231), (26335, 693891)], (4940631886147, 283582817678281)),
-                          (aoc_19, [(2, 'Not applicable to this data'), (3, 12)], (216, 400))
+                          (aoc_19, [(2, 'Not applicable to this data'), (3, 12)], (216, 400)),
+                          (aoc_20, [(20899048083289, 273)], (7492183537913, 2323))
                           ],
                          ids=["aoc_9", "aoc_10", "aoc_11", "aoc_12", "aoc_13", "aoc_14", "aoc_15", "aoc_16", "aoc_17",
-                              "aoc_18", "aoc_19"])
+                              "aoc_18", "aoc_19", "aoc_20"])
 def test_answers(day, expected_test, expected_actual):
     for test_nr in range(len(expected_test)):
         assert day.run_all(test_nr+1)[:2] == expected_test[test_nr]
