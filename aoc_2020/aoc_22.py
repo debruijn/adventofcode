@@ -5,6 +5,13 @@ debug = False
 
 
 def combat(stacks, simple=True):
+    # Small improvement from Reddit; how much it matters seems to depend on your input
+    # Idea: player 1 will win if player 1 has higher card, and that card is bigger than total cards - 2 in game, since
+    # in this case all rounds will be based on top card, which means all cards go to high card or the game repeats;
+    # in both cases player 1 will win.
+    if max(stacks[0]) > max(stacks[1]) and max(stacks[0]) > len(stacks[0]) + len(stacks[1]) - 2:
+        return 0
+
     history = []
     while len(stacks[0]) * len(stacks[1]) > 0:
         # Check if current card order has happened already in this game (-1 as divider between stacks)
@@ -14,12 +21,12 @@ def combat(stacks, simple=True):
         else:
             history.append(this_order)
 
-        # Find winner of round; either by comparing top_cards or by playing subgame (if not simple and we can recurse)
+        # Find winner of round; either by comparing top_cards or by playing subgame (if not simple, and we can recurse)
         top_cards = [stack.pop(0) for stack in stacks]
         if simple or not (len(stacks[0]) >= top_cards[0] and len(stacks[1]) >= top_cards[1]):
             winner = 0 if top_cards[0] > top_cards[1] else 1
         else:
-            winner = combat([stacks[0][:top_cards[0]].copy(), stacks[1][:top_cards[1]].copy()], simple=simple)
+            winner = combat([stacks[0][:top_cards[0]], stacks[1][:top_cards[1]]], simple=simple)
 
         if winner == 0:
             stacks[0].extend(top_cards)
