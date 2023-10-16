@@ -61,4 +61,4 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1, 2])
+    run_day(run_all, [1, 2, 3])
