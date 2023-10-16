@@ -1,5 +1,6 @@
 from typing import Union
 from util.util import ProcessInput, run_day
+from collections import Counter
 
 debug = False
 
@@ -37,35 +38,31 @@ def run_all(example_run: Union[int, bool]):
     # - define neighbours: |diff|<=1 per axis, and they are not both 1 or both -1
     # - for each point that is points, determine whether neighbours are points
     #   - if 1 or 2 of them are, keep this point for the next day
-    #   - also, update to which set white points belong: having 1, 2, or more neighbours
-    #       - all with 2 neighbours are added to the set for next day
+    #   - also, keep a running total for how many times neighbours not in points are checked
+    #       - if that count is 2, add to the set for next day
     # - repeat 100 times
-    points = set([point[0] + point[1] * 1j for point in points])
+    points = [point[0] + point[1] * 1j for point in points]
     neighbours = [(1, -1), (1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1)]
     neighbours = [point[0] + point[1] * 1j for point in neighbours]
     for day in range(100):
-        new_points = set()
-        white_sets = [set() for _ in range(2+1)]
+        new_points = []
+        white_with_neighbours = Counter()
         for point in points:
+            this_neighbours = [point + neighbour for neighbour in neighbours]
             this_count = 0
-            for neighbour in neighbours:
-                this_neighbour = point + neighbour
-                if this_neighbour in points:
+            for neighbour in this_neighbours:
+                if neighbour in points:
                     this_count += 1
                 else:
-                    not_present = True
-                    for i in range(0, 2):
-                        if not_present and this_neighbour in white_sets[i]:
-                            not_present = False
-                            white_sets[i].remove(this_neighbour)
-                            white_sets[i+1].add(this_neighbour)
-                    if not_present and this_neighbour not in white_sets[2]:
-                        white_sets[0].add(this_neighbour)
+                    white_with_neighbours[neighbour] += 1
             if this_count in (1, 2):
-                new_points.add(point)
-        points = new_points.union(white_sets[1])
+                new_points.append(point)
+        for white, count in white_with_neighbours.items():
+            if count == 2:
+                new_points.append(white)
         if debug:
-            print(f"Day {day+1}: {len(points)}")
+            print(f"Day {day+1}: {len(new_points)}")
+        points = new_points
 
     result_part2 = len(points)
 
