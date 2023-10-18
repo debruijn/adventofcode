@@ -12,6 +12,14 @@ tests are used to make sure future changes to the shared utility folder don't br
 - 2017: To Do
 - 2018: To Do
 - 2019: To Do
-- 2020: Doing
+- 2020: Done (but want to add tests to first 8 days still)
 - 2021: Done (but will require refactoring and adding tests)
 - 2022: Done (but will require adding tests)
+
+## General todo's
+Outside simply doing the coding challenges, I want to:
+- Improve run time of tests: ideally they all run under 1 sec per day and under 10 secs per year
+- Automatically pull and cache data - to avoid committing data to the repo
+- More utility functions for common operations or data structures
+- Redo days that use numpy without numpy such that I can leverage pypy more
+- Combining previous 2: create numpy-replacing utility functions in pure python
