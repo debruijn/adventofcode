@@ -1,5 +1,6 @@
-from aoc_2020 import aoc_9, aoc_10, aoc_11, aoc_12, aoc_13, aoc_14, aoc_15, aoc_16, aoc_17, aoc_18, aoc_19, aoc_20, \
-    aoc_21, aoc_22, aoc_23, aoc_24, aoc_25
+from aoc_2020 import (aoc_1, aoc_2, aoc_3, aoc_4, aoc_5, aoc_6, aoc_7, aoc_8, aoc_9, aoc_10,
+                      aoc_11, aoc_12, aoc_13, aoc_14, aoc_15, aoc_16, aoc_17, aoc_18, aoc_19,
+                      aoc_20, aoc_21, aoc_22, aoc_23, aoc_24, aoc_25)
 import pytest
 
 import os
@@ -8,7 +9,15 @@ os.chdir('../../aoc_2020')
 
 
 @pytest.mark.parametrize("day,expected_test,expected_actual",
-                         [(aoc_9, [(127, 62)], (138879426, 23761694)),
+                         [(aoc_1, [(514579, 241861950)], (319531, 244300320)),
+                          (aoc_2, [(2, 1)], (410, 694)),
+                          (aoc_3, [(7, 336)], (276, 7812180000)),
+                          (aoc_4, [(2, 2)], (247, 145)),
+                          (aoc_5, [(357, "NA"), (820, 120)], (970, 587)),
+                          (aoc_6, [(11, 6)], (6726, 3316)),
+                          (aoc_7, [(4, 32)], (229, 6683)),
+                          (aoc_8, [(5, 8)], (1548, 1375)),
+                          (aoc_9, [(127, 62)], (138879426, 23761694)),
                           (aoc_10, [(35, 8), (220, 19208)], (2470, 1973822685184)),
                           (aoc_11, [(37, 26)], (2386, 2091)),
                           (aoc_12, [(25, 286)], (998, 71586)),
@@ -28,8 +37,9 @@ os.chdir('../../aoc_2020')
                           (aoc_24, [(10, 2208)], (332, 3900)),
                           (aoc_25, [(14897079, "Merry Christmas")], (18293391, "Merry Christmas"))
                           ],
-                         ids=["aoc_9", "aoc_10", "aoc_11", "aoc_12", "aoc_13", "aoc_14", "aoc_15", "aoc_16", "aoc_17",
-                              "aoc_18", "aoc_19", "aoc_20", "aoc_21", "aoc_22", "aoc_23", "aoc_24", "aoc_25"])
+                         ids=["aoc_1", "aoc_2", "aoc_3", "aoc_4", "aoc_5", "aoc_6","aoc_7", "aoc_8", "aoc_9", "aoc_10",
+                              "aoc_11", "aoc_12", "aoc_13", "aoc_14", "aoc_15", "aoc_16", "aoc_17", "aoc_18", "aoc_19",
+                              "aoc_20", "aoc_21", "aoc_22", "aoc_23", "aoc_24", "aoc_25"])
 def test_answers(day, expected_test, expected_actual):
     for test_nr in range(len(expected_test)):
         assert day.run_all(test_nr + 1)[:2] == expected_test[test_nr]

@@ -12,7 +12,7 @@ tests are used to make sure future changes to the shared utility folder don't br
 - 2017: To Do
 - 2018: To Do
 - 2019: To Do
-- 2020: Done (but want to add tests to first 8 days still)
+- 2020: Done
 - 2021: Done (but will require refactoring and adding tests)
 - 2022: Done (but will require adding tests)
 
