@@ -1,11 +1,10 @@
 from typing import Union
-from util.util import timing
+from util.util import run_day
 
 
 debug = False
 
 
-@timing
 def run_all(example_run: Union[int, bool]):
 
     file = f'aoc_5_exampledata{example_run}' if example_run else 'aoc_5_data'
@@ -20,17 +19,13 @@ def run_all(example_run: Union[int, bool]):
     my_seat = [seat for seat in range(min(seat_ids), max(seat_ids)) if seat not in seat_ids]
 
     result_part1 = max(seat_ids)
-    result_part2 = my_seat[0] if len(my_seat) > 0 else "It is not known what"
+    result_part2 = my_seat[0] if len(my_seat) > 0 else "NA"
 
-    print(f'\nResults for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
-    print(f' Result of part 1: {result_part1} is the highest seat number')
-    print(f' Result of part 2: {result_part2} is still available')
-
-    print(f'\nDescriptives: \n Number of seats: {len(seat_ids)} \n'
-          f' Lowest seat number: {min(seat_ids)} \n'
-          f' Highest seat number: {max(seat_ids)} \n')
+    extra_out = {'Number of seats': len(seat_ids),
+                 'Lowest seat number': min(seat_ids),
+                 'Highest seat number': max(seat_ids)}
+    return result_part1, result_part2, extra_out
 
 
 if __name__ == "__main__":
-    [run_all(example_run=i) for i in [1, 2]]
-    run_all(example_run=False)
+    run_day(run_all, [1, 2])

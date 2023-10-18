@@ -1,11 +1,10 @@
 from typing import Union
-from util.util import timing
+from util.util import timing, run_day
 
 
 debug = False
 
 
-@timing
 def run_all(example_run: Union[int, bool]):
 
     file = f'aoc_6_exampledata{example_run}' if example_run else 'aoc_6_data'
@@ -36,11 +35,10 @@ def run_all(example_run: Union[int, bool]):
                 curr_set = curr_set.intersection(set(row))
     result_part2 = sum_count + len(curr_set)
 
-    print(f'\nResults for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
-    print(f' Result of part 1: {result_part1}')
-    print(f' Result of part 2: {result_part2}')
+    extra_out = {}
+    return result_part1, result_part2, extra_out
 
 
 if __name__ == "__main__":
-    [run_all(example_run=i) for i in [1]]
-    run_all(example_run=False)
+    run_day(run_all, [1])
+

@@ -1,5 +1,5 @@
 from typing import Union
-from util.util import timing
+from util.util import run_day
 
 debug = False
 
@@ -26,7 +26,6 @@ def run_program(data):
             curr_ind += int(row.split(' ')[1])
 
 
-@timing
 def run_all(example_run: Union[int, bool]):
 
     file = f'aoc_8_exampledata{example_run}' if example_run else 'aoc_8_data'
@@ -47,14 +46,10 @@ def run_all(example_run: Union[int, bool]):
 
     result_part2 = accumulator
 
-    print(f'\nResults for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
-    print(f' Result of part 1: {result_part1}')
-    print(f' Result of part 2: {result_part2}')
-
-    print(f'\nDescriptives: \n Length of program: {len(data)}'
-          f'\n Corrupted instruction: instruction {idrow} with text "{row}" \n')
+    extra_out = {'Length of program': len(data),
+                 'Corrupted instruction:': f"instruction {idrow} with text '{row}'"}
+    return result_part1, result_part2, extra_out
 
 
 if __name__ == "__main__":
-    [run_all(example_run=i) for i in [1]]
-    run_all(example_run=False)
+    run_day(run_all, [1])

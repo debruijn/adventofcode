@@ -1,5 +1,5 @@
 from typing import Union
-from util.util import timing
+from util.util import run_day
 
 
 debug = False
@@ -18,7 +18,6 @@ def check_slope(data, offset_x, offset_y):
     return sum_trees
 
 
-@timing
 def run_all(example_run: Union[int, bool]):
 
     file = f'aoc_3_exampledata{example_run}' if example_run else 'aoc_3_data'
@@ -40,11 +39,9 @@ def run_all(example_run: Union[int, bool]):
     result_part2 *= check_slope(adj_data, 7, 1)
     result_part2 *= check_slope(adj_data, 1, 2)
 
-    print(f'\nResults for {f"example" if example_run else "my"} input{f" {example_run}" if example_run else ""}:')
-    print(f' Result of part 1: {result_part1}')
-    print(f' Result of part 2: {result_part2}')
+    extra_out = {}
+    return result_part1, result_part2, extra_out
 
 
 if __name__ == "__main__":
-    [run_all(example_run=i) for i in [1]]
-    run_all(example_run=False)
+    run_day(run_all, [1])
