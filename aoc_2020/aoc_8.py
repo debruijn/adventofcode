@@ -1,5 +1,6 @@
 from typing import Union
-from util.util import run_day
+from util.util import run_day, get_example_data
+from aocd import get_data
 
 debug = False
 
@@ -28,10 +29,11 @@ def run_program(data):
 
 def run_all(example_run: Union[int, bool]):
 
-    file = f'aoc_8_exampledata{example_run}' if example_run else 'aoc_8_data'
-    with open(file) as f:
-        data = f.readlines()
-    adj_data = [row.rstrip('\n') for row in data]
+    if example_run:
+        adj_data = get_example_data(2020, 8, example_run-1)
+    else:
+        data_raw = get_data(day=8, year=2020)
+        adj_data = [x for x in data_raw.split('\n')]
 
     result_part1, _ = run_program(adj_data)
 
@@ -46,7 +48,7 @@ def run_all(example_run: Union[int, bool]):
 
     result_part2 = accumulator
 
-    extra_out = {'Length of program': len(data),
+    extra_out = {'Length of program': len(adj_data),
                  'Corrupted instruction:': f"instruction {idrow} with text '{row}'"}
     return result_part1, result_part2, extra_out
 

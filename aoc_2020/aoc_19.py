@@ -28,7 +28,7 @@ def check_expression(expression, rules, checked_rules):
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=19).as_list_of_strings_per_block().data
+    data = ProcessInput(example_run=example_run, day=19, year=2020).as_list_of_strings_per_block().data
     rules = {int(row.split(': ')[0]): row.split(': ')[1] for row in data[0]}
     messages = data[1]
 

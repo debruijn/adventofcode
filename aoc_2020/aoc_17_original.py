@@ -20,7 +20,7 @@ def count_neighbours_4d(grid, loc):
 
 
 def run_all(example_run: Union[int, bool]):
-    data = ProcessInput(example_run=example_run, day=17).data
+    data = ProcessInput(example_run=example_run, day=17, year=2020).data
     n_cycles = 6
 
     grid = np.array([[1 if x == '#' else 0 for x in row] for row in data])

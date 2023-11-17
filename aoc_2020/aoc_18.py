@@ -50,7 +50,7 @@ def calc_expression(expression, part2=False):
 
 
 def run_all(example_run: Union[int, bool]):
-    data = ProcessInput(example_run=example_run, day=18).data
+    data = ProcessInput(example_run=example_run, day=18, year=2020).data
 
     result_part1 = sum(calc_expression(row) for row in data)
     result_part2 = sum(calc_expression(row, part2=True) for row in data)

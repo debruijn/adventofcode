@@ -97,7 +97,7 @@ def part_2(label, nr_items=1000000, n_moves=10000000, n_take=2):
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=23).data
+    data = ProcessInput(example_run=example_run, day=23, year=2020).data
 
     # Part 1, original approach
     label = [int(x) for x in data[0]]

@@ -6,7 +6,7 @@ debug = False
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=25).as_int().data
+    data = ProcessInput(example_run=example_run, day=25, year=2020).as_int().data
 
     val = 1
     loop = 0

@@ -38,7 +38,7 @@ def flip(x):
 
 
 def run_all(example_run: Union[int, bool]):
-    data = ProcessInput(example_run=example_run, day=20).as_list_of_strings_per_block().data
+    data = ProcessInput(example_run=example_run, day=20, year=2020).as_list_of_strings_per_block().data
     tiles = {int(tile[0].replace(':', '').split(' ')[1]): tile[1:] for tile in data}
     tiles = {k: np.array([[1 if y == '#' else 0 for y in x] for x in tiles[k]]) for k in tiles.keys()}
     n_dim = int(np.sqrt(len(tiles)))

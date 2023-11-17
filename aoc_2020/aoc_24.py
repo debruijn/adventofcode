@@ -6,7 +6,7 @@ debug = False
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=24).data
+    data = ProcessInput(example_run=example_run, day=24, year=2020).data
 
     # Part 1:
     # - count steps in all directions

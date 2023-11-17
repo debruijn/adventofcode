@@ -7,7 +7,7 @@ debug = False
 
 
 def run_all(example_run: Union[int, bool]):
-    data = ProcessInput(example_run=example_run, day=21).data
+    data = ProcessInput(example_run=example_run, day=21, year=2020).data
 
     # Process input into ingredients/allergens per food, and all ingredients/allergens
     ingredients, allergens = map(list, zip(*[row.split(' (contains ') for row in data]))

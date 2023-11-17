@@ -36,7 +36,7 @@ def combat(stacks, simple=True):
 
 
 def run_all(example_run: Union[int, bool]):
-    data = ProcessInput(example_run=example_run, day=22).as_list_of_strings_per_block().data
+    data = ProcessInput(example_run=example_run, day=22, year=2020).as_list_of_strings_per_block().data
 
     stacks_p1 = [[int(x) for x in stack[1:]] for stack in data]
     winner_p1 = combat(stacks_p1)
@@ -58,4 +58,4 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1, 2])
+    run_day(run_all, [1])

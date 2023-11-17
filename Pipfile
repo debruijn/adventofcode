@@ -9,13 +9,16 @@ verify_ssl = true
 numpy = "*"
 pandas = "*"
 matplotlib = "*"
-advent-cli = "*"
 advent-of-code-data = "*"
 utils = "*"
 z3-solver = "*"
 pytest = "7.3.2"
 tqdm = "*"
 pytest-xdist = "*"
+parfor = "*"
+browser-cookie3 = "*"
+rich = "*"
+aocd-example-parser = "*"
 
 [requires]
 python_version = "3.10"
