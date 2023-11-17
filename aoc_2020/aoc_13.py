@@ -34,12 +34,12 @@ def get_timestamp(nums):
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=13).as_list_of_ints(pattern=",").data
+    data = ProcessInput(example_run=example_run, day=13, year=2020).as_list_of_ints(pattern=",").data
     minutes_to_wait = [x - (data[0][0] % x) for x in data[1]]
     earliest_bus = np.argmin(minutes_to_wait)
     result_part1 = data[1][earliest_bus] * minutes_to_wait[earliest_bus]
 
-    data = ProcessInput(example_run=example_run, day=13).data
+    data = ProcessInput(example_run=example_run, day=13, year=2020).data
     lines = [int(x) if x != 'x' else 1 for x in data[1].split(',')]
     result_part2 = get_timestamp(lines)
 

@@ -25,7 +25,7 @@ def get_permutations_sim(nr):
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=10).as_int().sort().data
+    data = ProcessInput(example_run=example_run, day=10, year=2020).as_int().sort().data
     data = [0] + data + [max(data)+3]
     diff_data = list(map(operator.sub, data[1:], data[:-1]))
 

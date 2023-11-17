@@ -74,7 +74,7 @@ def func_game_old(data, num_iter):
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=15).as_list_of_ints(',').data
+    data = ProcessInput(example_run=example_run, day=15, year=2020).as_list_of_ints(',').data
 
     result_part1 = func_game_opt(data, 2020)
     result_part2 = func_game_opt(data, 30000000)

@@ -34,7 +34,7 @@ def get_single_option(map_mat, final_map=None):
 def run_all(example_run: Union[int, bool]):
 
     # Reading data and processing
-    data = ProcessInput(example_run=example_run, day=16).as_list_of_strings_per_block().data
+    data = ProcessInput(example_run=example_run, day=16, year=2020).as_list_of_strings_per_block().data
     rules = [[[int(y) for y in x.split('-')]
               for x in (row.split(' ')[-3], row.split(' ')[-1])]
              for row in data[0]]

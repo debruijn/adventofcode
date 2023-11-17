@@ -1,5 +1,6 @@
 from typing import Union
-from util.util import run_day
+from util.util import run_day, get_example_data
+from aocd import get_data
 
 
 debug = False
@@ -7,10 +8,11 @@ debug = False
 
 def run_all(example_run: Union[int, bool]):
 
-    file = f'aoc_5_exampledata{example_run}' if example_run else 'aoc_5_data'
-    with open(file) as f:
-        data = f.readlines()
-    adj_data = [row.rstrip('\n') for row in data]
+    if example_run:
+        adj_data = get_example_data(2020, 5, example_run-1)
+    else:
+        data_raw = get_data(day=5, year=2020)
+        adj_data = [x for x in data_raw.split('\n')]
 
     def pass_to_seat(pass_str):
         return int(pass_str.replace('F', '0').replace('B', '1').replace('L', '0').replace('R', '1'), 2)

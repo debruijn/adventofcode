@@ -3,6 +3,7 @@ import pathlib
 from functools import wraps
 from itertools import accumulate
 from time import time
+import aocd
 
 
 def timing(f):
@@ -26,10 +27,22 @@ def list_set(list_list):
     return [set(x) for x in list_list]
 
 
-def read_file(example_run=None, loc=None, day=None):
+def get_example_data(year, day, example_run=0):
+    return aocd.models.Puzzle(year, day).examples[example_run].input_data.splitlines()
+
+
+def read_file(example_run=None, loc=None, day=None, year=None):
 
     if example_run is not None:
-        file = f'aoc_{day}_exampledata{example_run}' if example_run else f'aoc_{day}_data'
+        if example_run:
+            if year < 2023:
+                return get_example_data(year, day, example_run-1)
+            else:
+                file = f'aoc_{day}_exampledata{example_run}'  # TODO: test what happens for 2023 puzzles when they are live
+        elif year is not None:  # could use aocd.get_day_and_year
+            return aocd.get_data(day=day, year=year).splitlines()
+        else:
+            file = f'aoc_{day}_data'
     elif loc is not None:
         file = loc
     else:
@@ -40,11 +53,11 @@ def read_file(example_run=None, loc=None, day=None):
 
 class ProcessInput:
 
-    def __init__(self, example_run=None, loc=None, data=None, day=None):
+    def __init__(self, example_run=None, loc=None, data=None, day=None, year=None):
         if data:
             self.data = data
         else:
-            self.data = read_file(example_run, loc, day)
+            self.data = read_file(example_run, loc, day, year)
 
     def as_int(self):
         self.data = [int(row) for row in self.data]
