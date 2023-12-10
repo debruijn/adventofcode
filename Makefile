@@ -1,6 +1,6 @@
-DAY=9
+DAY=10
 YEAR=2023
-N_EXAMPLES=1
+N_EXAMPLES=5
 
 create:
 	# Copy template script and adjust x to day number
