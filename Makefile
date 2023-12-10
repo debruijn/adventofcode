@@ -1,5 +1,5 @@
-DAY=1
-YEAR=2019
+DAY=9
+YEAR=2023
 N_EXAMPLES=1
 
 create:
@@ -9,14 +9,13 @@ create:
 	sed -i 's/day=None/day=${DAY}/g' aoc_${YEAR}/aoc_${DAY}.py
 	sed -i 's/year=None/year=${YEAR}/g' aoc_${YEAR}/aoc_${DAY}.py
 
-	# Copy empty data file -> no longer needed now we use aocd.get_data()
-	# cp util/aoc_x_data aoc_${YEAR}/aoc_${DAY}_data
+add_empty_example_file:
+	for i in $$(seq 1 ${N_EXAMPLES}); do \
+		touch aoc_${YEAR}/aoc_${DAY}_exampledata$$i; \
+	done
 
-	# Copy empty example data file, N_EXAMPLES times -> no longer needed now we use aocd.models.Puzzle().examples -> TODO: think about what to do for new 2023 puzzles
-	# for i in $$(seq 1 ${N_EXAMPLES}); do \
-	# 	cp util/aoc_x_exampledata aoc_${YEAR}/aoc_${DAY}_exampledata$$i; \
-	# done
-
+add_empty_data_file:
+	touch aoc_${YEAR}/aoc_${DAY}_data
 
 # TODO: put the above steps in a folder per day
 # TODO: think about what to do for new 2023 puzzles concerning examples, currently falling back to using manual files
