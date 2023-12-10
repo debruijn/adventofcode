@@ -31,15 +31,18 @@ def get_example_data(year, day, example_run=0):
     return aocd.models.Puzzle(year, day).examples[example_run].input_data.splitlines()
 
 
-def read_file(example_run=None, loc=None, day=None, year=None):
+def read_file(example_run=None, loc=None, day=None, year=None, from_file=False):
 
     if example_run is not None:
         if example_run:
-            if year < 2023:
-                return get_example_data(year, day, example_run-1)
+            if year < 2023 and not from_file:
+                try:
+                    return get_example_data(year, day, example_run - 1)
+                except Exception:
+                    file = f'aoc_{day}_exampledata{example_run}'
             else:
                 file = f'aoc_{day}_exampledata{example_run}'  # TODO: test what happens for 2023 puzzles when they are live
-        elif year is not None:  # could use aocd.get_day_and_year
+        elif year is not None and not from_file:  # could use aocd.get_day_and_year
             return aocd.get_data(day=day, year=year).splitlines()
         else:
             file = f'aoc_{day}_data'
@@ -49,6 +52,10 @@ def read_file(example_run=None, loc=None, day=None, year=None):
         raise ValueError("Either example_run or loc needs to be specified.")
     # TODO: Gather more inspiration from https://github.com/alexander-yu/adventofcode/blob/master/utils.py -> parse
     return pathlib.Path(file).read_text().rstrip('\n').splitlines()
+
+
+def isdigit(s):
+    return s[1:].isdigit() if s.startswith('-') else s.isdigit()
 
 
 class ProcessInput:
@@ -64,11 +71,11 @@ class ProcessInput:
         return self
 
     def as_list_of_ints(self, pattern=" "):
-        self.data = [[int(s) for s in row.split(pattern) if s.isdigit()] for row in self.data]
+        self.data = [[int(s) for s in row.split(pattern) if isdigit(s)] for row in self.data]
         return self
 
     def as_list_of_ints_blockwise(self, pattern=" "):
-        lists_of_ints = [[int(s) for s in row.split(pattern) if s.isdigit()] for row in self.data]
+        lists_of_ints = [[int(s) for s in row.split(pattern) if isdigit(s)] for row in self.data]
         blocks = []
         curr_block = []
         for lst in lists_of_ints:
@@ -99,7 +106,7 @@ class ProcessInput:
         return self
 
     def remove_substrings(self, substrings):
-        #self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
+        # self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
         self.data = [[x for x in accumulate(substrings, functools.partial(str.replace, __new=""), initial=row)][-1]
                      for row in self.data]
         return self
