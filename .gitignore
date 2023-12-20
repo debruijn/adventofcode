@@ -1,6 +1,8 @@
 ### Files to ignore
 */ignore*
 local/*
+aoc_2019/aoc_21_exampledata1
+# Someone shared their data online (which they shouldn't) and I have used it to test my code as well (it works). But I am not committing it.
 
 ### Python template
 .idea
