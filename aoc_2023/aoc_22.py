@@ -9,6 +9,7 @@ debug = False
 # To speed up:  keep a running track of each highest Z at every X,Y, and compare new bricks to that.
 #               Then you immediately know how much the new brick would drop.
 #               You can use the footprint (e.g. X,Y) of the new brick to update the highest Z.
+# For part 2, we can create a dependency graph of each brick, such that we don't have to redo the settling process.
 # Thanks for reading :)
 
 
