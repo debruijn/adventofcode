@@ -35,6 +35,13 @@ def run_all(example_run: Union[int, bool]):
 
     pc = IntCodePC(data)
 
+    # I got to these directions by experimenting: where can you go to, what can you find, what can you pick up
+    # For the final room, I kept track of a sheet with which item combinations are too heavy and which are too light
+    # Could be done programmatically:
+    # - First explore all rooms and their contents
+    # - Then experiment which ones can be picked up (and which ones should be ignored)
+    # - Then take all others to the final room, and experiment with all combinations of items
+        # - Or a bit smarter: if A + B is too light, then just A or just B is also too light
     do_step(pc, print_out=debug)
     do_step(pc, move('east'), print_out=debug)
     do_step(pc, take('sand'), print_out=debug)
