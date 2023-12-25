@@ -34,6 +34,7 @@ def run_all(example_run: Union[int, bool]):
 
     # Remove these links based on above visual inspection
     remove = [('gpj', 'tmb'), ('rhh', 'mtc'), ('njn', 'xtx')] if not example_run else [('hfx', 'pzl'), ('bvb', 'cmg'), ('jqt', 'nvd')]
+    # Non-visual inspection: start with 1 node, increase with all that expand the set with more than 1 until convergence
 
     # Identify all in one part by starting with all on that side and increasing the group without linking to the other
     # part of the linking nodes
