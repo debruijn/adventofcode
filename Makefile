@@ -1,6 +1,10 @@
-DAY=15
-YEAR=2019
+DAY=1
+YEAR=2018
 N_EXAMPLES=1
+
+create_year_folder:
+	# Do this once to set up a folder for that year
+	mkdir aoc_${YEAR}
 
 create:
 	# Copy template script and adjust x to day number
