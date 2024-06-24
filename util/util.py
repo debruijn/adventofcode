@@ -1,6 +1,5 @@
-import functools
 import pathlib
-from functools import wraps
+from functools import wraps, partial
 from itertools import accumulate
 from time import time
 import aocd
@@ -107,7 +106,7 @@ class ProcessInput:
 
     def remove_substrings(self, substrings):
         # self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
-        self.data = [[x for x in accumulate(substrings, functools.partial(str.replace, __new=""), initial=row)][-1]
+        self.data = [[x for x in accumulate(substrings, partial(str.replace, __new=""), initial=row)][-1]
                      for row in self.data]
         return self
 
