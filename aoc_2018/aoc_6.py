@@ -1,6 +1,6 @@
 from typing import Union
 from util.util import ProcessInput, run_day
-from statistics import mean, median
+from statistics import median
 
 debug = False
 
