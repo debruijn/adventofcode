@@ -1,8 +1,8 @@
 from typing import Union
 from util.util import ProcessInput, run_day
-from statistics import mean
+from statistics import mean, median
 
-debug = True
+debug = False
 
 
 def run_all(example_run: Union[int, bool]):
@@ -10,71 +10,34 @@ def run_all(example_run: Union[int, bool]):
     data = ProcessInput(example_run=example_run, day=6, year=2018).data
     data = [[x for x in row.split(', ')] for row in data]
     points = [int(x[0]) + int(x[1])*1j for x in data]
-    extremes_real = (int(min(points, key=lambda x: x.real).real), int(max(points, key=lambda x: x.real).real)+1)  # TODO: as complex nr - remove +1!
-    extremes_imag = (int(min(points, key=lambda x: x.imag).imag), int(max(points, key=lambda x: x.imag).imag)+1)
+    extremes_real = (int(min(points, key=lambda x: x.real).real), int(max(points, key=lambda x: x.real).real) + 1)
+    extremes_imag = (int(min(points, key=lambda x: x.imag).imag), int(max(points, key=lambda x: x.imag).imag) + 1)
 
     # Part 1: two phases, identify infinite points, and then find largest among the remaining points
     #   Identify infinite points: go over the border of the square defined by the points, and find which one is closest
     #   Find largest among remaining: keep expanding region around point until no new points closest to this point
 
-    # Identify points closest to the border of the square of the extremes: those are infinite
+    # Function to find nearest points along one border of a square -> add those points to `infinite_points`
+    def check_border(extreme_along, extreme_for, along_real=True):
+        for x in range(*extreme_along):
+            pt = x * (1 if along_real else 1j) + extreme_for * (1j if along_real else 1)
+            min_dist = 1000000000000
+            curr_min = -1
+            for point in points:
+                this_dist = abs(point.imag - pt.imag) + abs(point.real - pt.real)
+                if this_dist < min_dist:
+                    min_dist = this_dist
+                    curr_min = point
+                elif this_dist == min_dist:  # In case of ties: don't count it towards any point
+                    curr_min = -1
+            if curr_min != -1 and curr_min not in infinite_points:
+                infinite_points.append(curr_min)
+
     infinite_points = []
-
-    # For cleanup, create two functions: one to check a borderpoint with all the given points, and one to construct the
-    # border points. Second is less needed.
-    for x in range(*extremes_real):
-        pt = x + extremes_imag[0] * 1j
-        min_dist = 1000000000000
-        curr_min = -1
-        for point in points:
-            this_dist = abs(point.imag - pt.imag) + abs(point.real - pt.real)
-            if this_dist < min_dist:
-                min_dist = this_dist
-                curr_min = point
-            elif this_dist == min_dist:  # In case of ties: don't count it towards any point
-                curr_min = -1
-        if curr_min != -1 and curr_min not in infinite_points:
-            infinite_points.append(curr_min)
-
-        pt = x + (extremes_imag[1] - 1) * 1j  # TODO: remove -1 here after change above
-        min_dist = 1000000000000
-        curr_min = -1
-        for point in points:
-            this_dist = abs(point.imag - pt.imag) + abs(point.real - pt.real)
-            if this_dist < min_dist:
-                min_dist = this_dist
-                curr_min = point
-            elif this_dist == min_dist:
-                curr_min = -1
-        if curr_min != -1 and curr_min not in infinite_points:
-            infinite_points.append(curr_min)
-
-    for x in range(*extremes_imag):
-        pt = x * 1j + extremes_real[0]
-        min_dist = 1000000000000
-        curr_min = -1
-        for point in points:
-            this_dist = abs(point.imag - pt.imag) + abs(point.real - pt.real)
-            if this_dist < min_dist:
-                min_dist = this_dist
-                curr_min = point
-            elif this_dist == min_dist:
-                curr_min = -1
-        if curr_min != -1 and curr_min not in infinite_points:
-            infinite_points.append(curr_min)
-
-        pt = x * 1j + extremes_imag[1] - 1  # TODO: remove -1 here after change above
-        min_dist = 1000000000000
-        curr_min = -1
-        for point in points:
-            this_dist = abs(point.imag - pt.imag) + abs(point.real - pt.real)
-            if this_dist < min_dist:
-                min_dist = this_dist
-                curr_min = point
-            elif this_dist == min_dist:
-                curr_min = -1
-        if curr_min != -1 and curr_min not in infinite_points:
-            infinite_points.append(curr_min)
+    check_border(extremes_real, extremes_imag[0])
+    check_border(extremes_real, extremes_imag[1] - 1)
+    check_border(extremes_imag, extremes_real[0], along_real=False)
+    check_border(extremes_imag, extremes_real[1] - 1, along_real=False)
 
     # For non-infinite points, go one wider from their point until you don't gain 1 anymore
     candidate_points = [x for x in points if x not in infinite_points]
@@ -119,13 +82,14 @@ def run_all(example_run: Union[int, bool]):
 
     result_part1 = max(point_counts.values())
 
-    # Part 2: start in the middle (I have tested that this is in the region; if not, I'd have to find another start)
-    # Then keep expanding the region with 1 more until there are no new anymore
+    # Part 2: start in the middle (which I had tested) or better in the update: start at the median.
+    # Then keep expanding the region to consider to be 1 wider until that doesn't lead to new valid points in the region
     # Better version: make a queue of those "bordering the ones in the region but not yet checked themselves" to avoid
     #   checking in a direction that is already outside the region but at the same distance of 'start' as another
     #   direction that still has points in the region
 
-    start = int(round(mean(extremes_real))) + int(round(mean(extremes_imag))) * 1j
+    # OLD: start = int(round(mean(extremes_real))) + int(round(mean(extremes_imag))) * 1j
+    start = int(median([x.real for x in points])) + int(median([x.imag for x in points])) * 1j
     this_count = 1
     this_dist = 0
     curr_count = 1
