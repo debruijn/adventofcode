@@ -43,7 +43,7 @@ def run_all(example_run: Union[int, bool]):
     extra_out = {'Number of numbers in input': len(data),
                  'Number of nodes': len(nodes),
                  'Max depth': nodes[max(nodes, key=lambda x: nodes[x][-1])][-1],
-                 'Max number of direct childeren': nodes[max(nodes, key=lambda x: nodes[x][0])][0]}
+                 'Max number of direct children': nodes[max(nodes, key=lambda x: nodes[x][0])][0]}
 
     return result_part1, result_part2, extra_out
 
