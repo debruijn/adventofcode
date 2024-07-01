@@ -1,8 +1,26 @@
 import pathlib
+from collections import defaultdict
+from collections.abc import Callable
 from functools import wraps, partial
 from itertools import accumulate, chain
 from time import time
+from typing import TypeVar
 import aocd
+
+_VT = TypeVar("_VT")
+
+
+class DefaultDictWithCustomFactory(defaultdict):
+    default_factory: Callable[[], _VT] | object
+
+    def __init__(self, default_factory):
+        super().__init__(default_factory)
+
+    def __missing__(self, key):
+        if self.default_factory is None:
+            raise KeyError((key,))
+        self[key] = value = self.default_factory(key)
+        return value
 
 
 def timing(f):
