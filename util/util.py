@@ -1,6 +1,6 @@
 import pathlib
 from functools import wraps, partial
-from itertools import accumulate
+from itertools import accumulate, chain
 from time import time
 import aocd
 
@@ -108,6 +108,14 @@ class ProcessInput:
         # self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
         self.data = [[x for x in accumulate(substrings, partial(str.replace, __new=""), initial=row)][-1]
                      for row in self.data]
+        return self
+
+    def concatenate(self):
+        self.data = [x for x in chain.from_iterable(self.data)]
+        return self
+
+    def as_single_int(self):
+        self.data = self.as_int().data[0]
         return self
 
 
