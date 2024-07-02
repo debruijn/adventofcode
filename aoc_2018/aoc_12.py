@@ -6,7 +6,13 @@ import re
 debug = False
 
 
-def count_char(x, character='.', reverse=False):
+def get_index_sum(state, index):
+    # Target function of counting pots with plants while taking into account the index shift.
+    return sum([i + index for i in range(len(state)) if state[i] == '#'])
+
+
+def _count_char(x, character='.', reverse=False):
+    # Utility function for use in trim_plants() to count number of counts of character at start/end of total state.
     count = 0
     for loc in range(len(x)):
         if x[-loc - 1 if reverse else loc] == character:
@@ -16,12 +22,9 @@ def count_char(x, character='.', reverse=False):
     return count
 
 
-def get_index_sum(state, index):
-    return sum([i + index for i in range(len(state)) if state[i] == '#'])
-
-
 def trim_plants(state, index):
-    start_count = count_char(state)
+    # Function to trim/pad state to end up with exactly 4 dots at start/end of state.
+    start_count = _count_char(state)
     if start_count < 4:
         state = "".join(['.'] * (4 - start_count)) + state
         index -= (4 - start_count)
@@ -29,7 +32,7 @@ def trim_plants(state, index):
         state = state[start_count - 4:]
         index += (start_count - 4)
 
-    end_count = count_char(state, reverse=True)
+    end_count = _count_char(state, reverse=True)
     if end_count < 4:
         state = state + "".join(['.'] * (4 - end_count))
     elif end_count > 4:
