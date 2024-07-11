@@ -2,13 +2,14 @@ from collections import defaultdict
 from typing import Union
 from util.util import ProcessInput, run_day
 
-debug = False
+move_mapping = {'E': 1j, 'W': -1j, 'N': -1, 'S': 1}
 
 
 def split_next_regex(next_regex):
+    # Split the next step with options into a list with the options split out, and the outer (, | and ) removed.
     splits = next_regex.split('|')
     i = 0
-    while i < len(splits):
+    while i < len(splits):  # This while loop adds parts together if it was an inner | to be processed later on.
         if splits[i].count('(') > splits[i].count(')'):
             splits[i] = splits[i] + '|' + splits.pop(i+1)
         else:
@@ -17,7 +18,8 @@ def split_next_regex(next_regex):
 
 
 def split_regex(regex):
-
+    # Split total regex into first sure part, the first choice with all its outer options, and the remainder (which
+    #  could have more options within it, be a sure path, or be empty).
     first = regex[:regex.find('(')]
     regex = regex[regex.find('(') + 1:]
     count = 1
@@ -32,9 +34,6 @@ def split_regex(regex):
     third = regex[ind:]
 
     return first, second, third
-
-
-move_mapping = {'E': 1j, 'W': -1j, 'N': -1, 'S': 1}
 
 
 def run_all(example_run: Union[int, bool]):
