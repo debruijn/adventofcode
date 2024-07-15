@@ -34,6 +34,12 @@ def timing(f):
     return wrap
 
 
+def multisplit(string, splits):
+    if len(splits) > 0:
+        return sum([multisplit(x, splits[1:]) for x in string.split(splits[0])], [])
+    return [string]
+
+
 def rows_to_chunks(rows, break_str=""):
     inds = [-1] + [i for i in range(len(rows)) if rows[i] == break_str] + [len(rows)]
     return [rows[inds[i] + 1:inds[i + 1]] for i in range(len(inds) - 1)]
