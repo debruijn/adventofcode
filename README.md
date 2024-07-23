@@ -9,8 +9,8 @@ data that has been pulled from the server using authentication and the aocd pack
 ## Status per year
 - 2015: To Do
 - 2016: To Do
-- 2017: To Do
-- 2018: Doing
+- 2017: Doing
+- 2018: Done
 - 2019: Done
 - 2020: Done
 - 2021: Done (except for using aocd)
