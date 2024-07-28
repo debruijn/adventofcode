@@ -134,6 +134,12 @@ class ProcessInput:
                      for row in self.data]
         return self
 
+    def replace_substrings(self, substrings, to=' '):
+        # self.data = [[x for x in accumulate(substrings, str_remove, initial=row)][-1] for row in self.data]
+        self.data = [[x for x in accumulate(substrings, partial(str.replace, new=to), initial=row)][-1]
+                     for row in self.data]
+        return self
+
     def concatenate(self):
         self.data = [x for x in chain.from_iterable(self.data)]
         return self
