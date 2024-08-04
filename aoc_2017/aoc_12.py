@@ -43,4 +43,4 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1])  # 1831 too high
+    run_day(run_all, [1])
