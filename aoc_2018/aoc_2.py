@@ -3,8 +3,6 @@ from itertools import combinations
 from typing import Union
 from util.util import ProcessInput, run_day
 
-debug = False
-
 
 def run_all(example_run: Union[int, bool]):
 

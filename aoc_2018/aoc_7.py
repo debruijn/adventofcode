@@ -40,7 +40,6 @@ def run_all(example_run: Union[int, bool]):
     # - assign to available workers alpha-first tasks
     # - find next completed task; update other tasks and add worker to available workers
 
-
     requirements = get_reqs(data)
     n_workers = 2 if example_run else 5
     step_time = 0 if example_run else 60

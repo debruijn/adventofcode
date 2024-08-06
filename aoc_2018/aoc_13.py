@@ -2,8 +2,6 @@ from typing import Union
 from util.util import ProcessInput, run_day
 from itertools import cycle
 
-debug = False
-
 turn_mapping = {('\\', 1): 1j, ('/', 1): -1j, ('\\', -1): -1j, ('/', -1): 1j,
                 ('\\', 1j): 1, ('/', 1j): -1, ('\\', -1j): -1, ('/', -1j): 1}
 cart_mapping = {'>': 1j, 'v': 1, '<': -1j, '^': -1}

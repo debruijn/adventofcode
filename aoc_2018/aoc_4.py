@@ -2,8 +2,6 @@ from collections import Counter, defaultdict
 from typing import Union
 from util.util import ProcessInput, run_day
 
-debug = False
-
 
 def run_all(example_run: Union[int, bool]):
 

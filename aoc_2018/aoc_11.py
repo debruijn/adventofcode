@@ -2,7 +2,6 @@ from typing import Union
 from util.util import ProcessInput, run_day, DefaultDictWithCustomFactory
 from itertools import product
 
-
 debug = False
 
 
