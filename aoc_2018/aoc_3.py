@@ -1,9 +1,6 @@
-from operator import attrgetter
 from collections import Counter
 from typing import Union
 from util.util import ProcessInput, run_day
-
-debug = False
 
 
 def run_all(example_run: Union[int, bool]):

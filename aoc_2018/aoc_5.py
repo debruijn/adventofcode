@@ -2,8 +2,6 @@ from itertools import pairwise
 from typing import Union
 from util.util import ProcessInput, run_day
 
-debug = False
-
 
 def run_polymerization(polymer):
     stop = False

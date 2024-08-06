@@ -2,8 +2,6 @@ import math
 from typing import Union
 from util.util import ProcessInput, run_day, isdigit
 
-debug = False
-
 
 def as_list_of_ints(row, pattern=" ", remove=()):
     for rm in remove:
