@@ -1,7 +1,7 @@
 from typing import Union
 from util.util import ProcessInput, run_day
 
-debug = False
+debug = False  # TODO remove if not needed
 
 
 def run_all(example_run: Union[int, bool]):

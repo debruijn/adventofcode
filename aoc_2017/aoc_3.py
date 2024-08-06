@@ -1,9 +1,6 @@
-
 from collections import defaultdict
 from typing import Union
 from util.util import ProcessInput, run_day
-
-debug = False
 
 
 def get_neighbors(loc):
