@@ -81,6 +81,10 @@ def isdigit(s):
     return s[1:].isdigit() if s.startswith('-') else s.isdigit()
 
 
+def isnumeric(s):
+    return s[1:].isnumeric() if s.startswith('-') else s.isnumeric()
+
+
 class ProcessInput:
 
     def __init__(self, example_run=None, loc=None, data=None, day=None, year=None):
