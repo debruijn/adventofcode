@@ -1,12 +1,12 @@
 from typing import Union
 from util.util import ProcessInput, run_day
 
-debug = False  # TODO remove if not needed
-
 
 def run_all(example_run: Union[int, bool]):
 
-    data = ProcessInput(example_run=example_run, day=None, year=None).as_int().data
+    data = ProcessInput(example_run=example_run, day=None, year=None).data
+    debug = False  # TODO remove if not needed
+    print(data)
 
     result_part1 = "TODO"
     result_part2 = "TODO"
