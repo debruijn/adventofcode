@@ -1,5 +1,5 @@
 import pathlib
-from collections import defaultdict
+from collections import defaultdict, Counter
 from collections.abc import Callable
 from functools import wraps, partial
 from itertools import accumulate, chain
@@ -48,6 +48,14 @@ def rows_to_chunks(rows, break_str=""):
 def list_set(list_list):
     # Returns a list of set from a list of lists
     return [set(x) for x in list_list]
+
+
+def sort_counter(counter):
+    keys = sorted(counter.keys())
+    new_counter = Counter()
+    for key in keys:
+        new_counter[key] = counter[key]
+    return new_counter
 
 
 def get_example_data(year, day, example_run=0):
