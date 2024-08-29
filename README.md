@@ -8,8 +8,8 @@ data that has been pulled from the server using authentication and the aocd pack
 
 ## Status per year
 - 2015: To Do
-- 2016: To Do
-- 2017: Doing
+- 2016: Doing
+- 2017: Done
 - 2018: Done
 - 2019: Done
 - 2020: Done
