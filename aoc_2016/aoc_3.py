@@ -1,14 +1,5 @@
-from itertools import islice
 from typing import Union
-from util.util import ProcessInput, run_day
-
-
-def batched(iterable, n):
-    # batched('ABCDEFG', 3) → ABC DEF G
-    # From Python 3.12 documentation
-    iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
-        yield batch
+from util.util import ProcessInput, run_day, batched
 
 
 def run_all(example_run: Union[int, bool]):
