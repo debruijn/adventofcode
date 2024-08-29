@@ -2,7 +2,7 @@ import pathlib
 from collections import defaultdict, Counter
 from collections.abc import Callable
 from functools import wraps, partial
-from itertools import accumulate, chain
+from itertools import accumulate, chain, islice
 from time import time
 from typing import TypeVar
 import aocd
@@ -21,6 +21,14 @@ class DefaultDictWithCustomFactory(defaultdict):
             raise KeyError((key,))
         self[key] = value = self.default_factory(key)
         return value
+
+
+def batched(iterable, n):
+    # batched('ABCDEFG', 3) → ABC DEF G
+    # From Python 3.12 documentation
+    iterator = iter(iterable)
+    while batch := tuple(islice(iterator, n)):
+        yield batch
 
 
 def timing(f):
