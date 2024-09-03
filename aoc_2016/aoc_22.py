@@ -1,7 +1,6 @@
 from itertools import permutations
 from typing import Union
 from util.util import ProcessInput, run_day
-from collections import deque
 
 
 def run_all(example_run: Union[int, bool]):
