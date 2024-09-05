@@ -33,7 +33,7 @@ def get_distances(free, nums):
                 new_loc = this_loc + step
                 if new_loc in free and new_loc not in hist:
                     hist.append(new_loc)
-                    queue.append([new_loc, this_dist + 1])
+                    queue.append((new_loc, this_dist + 1))
         dist[x][y] = this_dist
         dist[y][x] = this_dist
 
