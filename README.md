@@ -7,7 +7,7 @@ data that has been pulled from the server using authentication and the aocd pack
 (https://github.com/wimglenn/advent-of-code-data)
 
 ## Status per year
-- 2015: To Do
+- 2015: Doing
 - 2016: Done
 - 2017: Done
 - 2018: Done
