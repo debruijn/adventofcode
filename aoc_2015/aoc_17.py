@@ -10,7 +10,7 @@ def run_all(example_run: Union[int, bool]):
     C = 25 if example_run else 150
 
     count_combinations = 0
-    empty_containers = sorted(data)
+    empty_containers = sorted(data, reverse=True)
 
     # A DFS (for once it makes more sense than BFS) to go over all possible valid combinations.
     # Key insight: you can assume the containers are already ordered in the way you will have them in the end, so when
