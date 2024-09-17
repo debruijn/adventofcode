@@ -6,8 +6,15 @@ The goal of this repo is to have the solutions to the puzzles in here, for all y
 data that has been pulled from the server using authentication and the aocd package 
 (https://github.com/wimglenn/advent-of-code-data)
 
+The majority of the work will be done in (pure) Python, except for the first few years I participated (2021/2022) when
+I was still using numpy and pandas a lot (which is fine, it is just not my goal anymore; I want to make it work 
+without external packages for pypy).
+
+Next to this I also want to start experimenting more with using Rust for key performance bottlenecks from within Python.
+An early example of this can be found in 2018/day5.
+
 ## Status per year
-- 2015: Doing
+- 2015: Done
 - 2016: Done
 - 2017: Done
 - 2018: Done
