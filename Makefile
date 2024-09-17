@@ -30,3 +30,12 @@ sync:  # Reminder for what command is to sync a project with the committed Pipfi
 
 get_cookie:  # Make sure to install browser-cookie3 as well
 	aocd-token > ~/.config/aocd/token
+
+cargo_new_folder:  # Make a new cargo (Rust source) library folder for use within Python, within aoc_${YEAR}
+	cd aoc_${YEAR}
+	cargo new --lib --edition 2021 aoc_rust_${YEAR}
+	# I might replace this with making a template and moving that instead (like in `create`)
+
+maturin_develop:  # Develop the Rust library for YEAR into a Python usable package
+	cd aoc_${YEAR}/aoc_rust_${YEAR}
+	maturin develop
