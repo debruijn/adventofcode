@@ -18,6 +18,7 @@ fn run_polymerization<'a>(input: Vec<u8>) -> usize {
 }
 
 #[pymodule]
+#[pyo3(name="aoc_rust")]
 fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(run_polymerization, m)?)?;
     Ok(())

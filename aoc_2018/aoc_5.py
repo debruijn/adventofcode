@@ -1,7 +1,7 @@
 from itertools import pairwise
 from typing import Union
 from util.util import ProcessInput, run_day
-from aoc_rust_2018 import run_polymerization as rust_polumerization
+from aoc_rust import run_polymerization as rust_polymerization
 
 
 # Use rust instead of Python implementation. Timing difference on my pc: 0.22s (Rust) vs 9.07s (Python) vs 7.55s (PyPy)
@@ -10,7 +10,7 @@ use_rust = True
 
 def run_polymerization(polymer):
     if use_rust:
-        return rust_polumerization(polymer.encode())
+        return rust_polymerization(polymer.encode())
     stop = False
     curr_len = len(polymer)
     while not stop:
