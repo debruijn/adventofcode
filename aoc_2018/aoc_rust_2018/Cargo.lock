@@ -3,8 +3,8 @@
 version = 3
 
 [[package]]
-name = "aoc_rust_2018"
-version = "0.1.0"
+name = "aoc_rust"
+version = "0.1.1"
 dependencies = [
  "pyo3",
  "rand",
