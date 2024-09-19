@@ -18,6 +18,23 @@ fn get_frequency_shifts<'a>(input: Vec<isize>) -> isize {
     curr_freq
 }
 
+#[pyfunction]
+fn get_frequency_shifts_raw_input<'a>(input: String) -> isize {
+    let v = input.split(", ").map(|d| d.parse::<isize>().unwrap());
+    let mut curr_freq = 0;
+    let mut freqs = HashSet::new();
+    for c in v.into_iter().cycle() {
+        curr_freq += c;
+        if freqs.contains(&curr_freq) {
+            break
+        } else {
+            freqs.replace(curr_freq);
+        }
+    }
+    curr_freq
+}
+
+
 // 2018 day 5, utility function in Rust
 #[pyfunction]
 fn run_polymerization<'a>(input: Vec<u8>) -> usize {
@@ -106,5 +123,6 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(run_polymerization, m)?)?;
     m.add_function(wrap_pyfunction!(find_recipe, m)?)?;
     m.add_function(wrap_pyfunction!(get_frequency_shifts, m)?)?;
+    m.add_function(wrap_pyfunction!(get_frequency_shifts_raw_input, m)?)?;
     Ok(())
 }

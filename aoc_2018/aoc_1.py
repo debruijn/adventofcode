@@ -1,6 +1,6 @@
 from typing import Union
 from util.util import ProcessInput, run_day
-from aoc_rust import get_frequency_shifts
+from aoc_rust import get_frequency_shifts_raw_input
 
 
 use_rust = False
@@ -11,6 +11,7 @@ def run_all(example_run: Union[int, bool]):
     data = ProcessInput(example_run=example_run, day=1, year=2018).data
     if len(data) > 1:
         data = [", ".join(data)]
+    data_bu = data[0]
     data = [int(x) for x in data[0].replace('+', '').split(', ')]
 
     # Part 1
@@ -30,7 +31,8 @@ def run_all(example_run: Union[int, bool]):
             else:
                 dict_of_freqs.add(curr_freq)
     else:
-        curr_freq = get_frequency_shifts(data)
+        # curr_freq = get_frequency_shifts(data)  # Slower implementation due to copying over of variables
+        curr_freq = get_frequency_shifts_raw_input(data_bu.replace('+', ''))
 
     result_part2 = curr_freq
 
