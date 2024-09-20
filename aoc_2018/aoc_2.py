@@ -2,7 +2,7 @@ from collections import Counter
 from itertools import combinations
 from typing import Union
 from util.util import ProcessInput, run_day
-from aoc_rust import get_box_checksums
+from aoc_rust import get_box_checksums, get_correct_box_ids, get_box_checksum_and_correct_id
 
 
 use_rust = True
@@ -17,7 +17,7 @@ def run_all(example_run: Union[int, bool]):
 
     # Part 1
     if use_rust:
-        result_part1 = get_box_checksums(data)
+        result_part1, result_part2 = get_box_checksum_and_correct_id(data)
     else:
         counts = [0, 0]
         for id in data:
@@ -26,12 +26,16 @@ def run_all(example_run: Union[int, bool]):
         result_part1 = counts[0] * counts[1]
 
     # Part 2
-    result_part2 = "TODO"
-    len_ids = len(data[0])
-    for id1, id2 in combinations(data, 2):
-        if sum([id1[i] == id2[i] for i in range(len_ids)]) == len_ids - 1:
-            result_part2 = "".join([id1[i] for i in range(len_ids) if id1[i] == id2[i]])
-            break
+    if use_rust:
+        # result_part2 = get_correct_box_ids(data)
+        len_ids = len(data[0])
+    else:
+        result_part2 = "TODO"
+        len_ids = len(data[0])
+        for id1, id2 in combinations(data, 2):
+            if sum([id1[i] == id2[i] for i in range(len_ids)]) == len_ids - 1:
+                result_part2 = "".join([id1[i] for i in range(len_ids) if id1[i] == id2[i]])
+                break
 
     extra_out = {'Number of ids in input': len(data),
                  'Length of ids': len_ids}

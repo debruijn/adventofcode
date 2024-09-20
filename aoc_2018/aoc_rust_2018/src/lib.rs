@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+use itertools::Itertools;
 use pyo3::prelude::*;
 
 
@@ -50,6 +51,36 @@ fn get_box_checksums<'a>(input: Vec<String>) -> isize {
         count3 += if char_counts.values().any(|&val| val == 3) {1} else {0};
     }
     count2 * count3
+}
+
+
+// 2018 day 2 part2 utility function
+#[pyfunction]
+fn get_correct_box_ids<'a>(input: Vec<String>) -> String {
+    for str in input.into_iter().combinations(2) {
+        let mut count_diff = 0;
+        for (i, c1) in str[0].chars().enumerate() {
+            let this = str[1].chars().nth(i).unwrap();
+            count_diff += if this.eq(&c1) { 0 } else { 1 };
+            if count_diff >= 2 { break };
+        }
+        if count_diff == 1 {
+            let mut res = String::from("");
+            for (i, c1) in str[0].chars().enumerate() {
+                let this = str[1].chars().nth(i).unwrap();
+                if this.eq(&c1) { res += &c1.to_string() }
+            }
+            return res
+        }
+    }
+    "".to_string()
+}
+
+
+// 2018 day 2 together
+#[pyfunction]
+fn get_box_checksum_and_correct_id<'a>(input: Vec<String>) -> (isize, String) {
+    (get_box_checksums(input.clone()), get_correct_box_ids(input))
 }
 
 
@@ -143,5 +174,7 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_frequency_shifts, m)?)?;
     m.add_function(wrap_pyfunction!(get_frequency_shifts_raw_input, m)?)?;
     m.add_function(wrap_pyfunction!(get_box_checksums, m)?)?;
+    m.add_function(wrap_pyfunction!(get_correct_box_ids, m)?)?;
+    m.add_function(wrap_pyfunction!(get_box_checksum_and_correct_id, m)?)?;
     Ok(())
 }
