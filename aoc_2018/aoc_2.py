@@ -2,18 +2,28 @@ from collections import Counter
 from itertools import combinations
 from typing import Union
 from util.util import ProcessInput, run_day
+from aoc_rust import get_box_checksums
+
+
+use_rust = True
 
 
 def run_all(example_run: Union[int, bool]):
 
     data = ProcessInput(example_run=example_run, day=2, year=2018).data
 
+
+    print(data)
+
     # Part 1
-    counts = [0, 0]
-    for id in data:
-        counts = [counts[0] + any([x == 2 for x in Counter(id).values()]),
-                  counts[1] + any([x == 3 for x in Counter(id).values()])]
-    result_part1 = counts[0] * counts[1]
+    if use_rust:
+        result_part1 = get_box_checksums(data)
+    else:
+        counts = [0, 0]
+        for id in data:
+            counts = [counts[0] + any([x == 2 for x in Counter(id).values()]),
+                      counts[1] + any([x == 3 for x in Counter(id).values()])]
+        result_part1 = counts[0] * counts[1]
 
     # Part 2
     result_part2 = "TODO"

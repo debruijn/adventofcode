@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use pyo3::prelude::*;
 
 
@@ -32,6 +32,24 @@ fn get_frequency_shifts_raw_input<'a>(input: String) -> isize {
         }
     }
     curr_freq
+}
+
+
+// 2018 day 2 part 1 utility function
+#[pyfunction]
+fn get_box_checksums<'a>(input: Vec<String>) -> isize {
+    let mut count2 = 0;
+    let mut count3 = 0;
+
+    for str in input.into_iter() {
+        let mut char_counts: HashMap<char,i32> = HashMap::new();
+        for c in str.chars() {
+            *char_counts.entry(c).or_insert(0) += 1;
+        }
+        count2 += if char_counts.values().any(|&val| val == 2) {1} else {0};
+        count3 += if char_counts.values().any(|&val| val == 3) {1} else {0};
+    }
+    count2 * count3
 }
 
 
@@ -124,5 +142,6 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(find_recipe, m)?)?;
     m.add_function(wrap_pyfunction!(get_frequency_shifts, m)?)?;
     m.add_function(wrap_pyfunction!(get_frequency_shifts_raw_input, m)?)?;
+    m.add_function(wrap_pyfunction!(get_box_checksums, m)?)?;
     Ok(())
 }
