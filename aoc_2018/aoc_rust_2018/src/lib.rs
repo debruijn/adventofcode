@@ -84,6 +84,40 @@ fn get_box_checksum_and_correct_id<'a>(input: Vec<String>) -> (isize, String) {
 }
 
 
+// 2018 day 3
+#[pyfunction]
+fn process_contested_claims<'a>(input: Vec<[i16;5]>) -> (usize, i16) {
+    let mut counts = HashMap::new();
+    for claim in &input {
+        for r in claim[1]..claim[1]+claim[3] {
+            for c in claim[2]..claim[2]+claim[4] {
+                let this_count: &mut i64 = counts.entry((r, c)).or_insert(0);
+                *this_count += 1;
+            }
+        }
+    }
+    let mut count_contested_claims = 0;
+    for count in counts.values() {
+        if *count > 1 {
+            count_contested_claims += 1;
+        }
+    }
+
+    'for_claim: for claim in input {
+        for r in claim[1]..claim[1]+claim[3] {
+            for c in claim[2]..claim[2]+claim[4] {
+                if counts[&(r, c)] > 1 {
+                    continue 'for_claim;
+                }
+            }
+        }
+        return (count_contested_claims, claim[0])
+    }
+
+    (count_contested_claims, 0)
+}
+
+
 // 2018 day 5, utility function in Rust
 #[pyfunction]
 fn run_polymerization<'a>(input: Vec<u8>) -> usize {
@@ -176,5 +210,6 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_box_checksums, m)?)?;
     m.add_function(wrap_pyfunction!(get_correct_box_ids, m)?)?;
     m.add_function(wrap_pyfunction!(get_box_checksum_and_correct_id, m)?)?;
+    m.add_function(wrap_pyfunction!(process_contested_claims, m)?)?;
     Ok(())
 }
