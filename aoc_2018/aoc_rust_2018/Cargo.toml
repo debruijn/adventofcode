@@ -1,6 +1,6 @@
 [package]
 name = "aoc_rust"
-version = "0.3.0"
+version = "0.5.0"
 edition = "2021"
 
 [lib]
@@ -12,6 +12,7 @@ crate-type = ["cdylib"]
 rand = "0.8.5"
 itertools = "0.13.0"
 counter = "0.6.0"
+defaultmap = "0.6.0"
 
 [dependencies.pyo3]
 version = "0.22.3"
