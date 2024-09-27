@@ -3,7 +3,7 @@ from util.util import ProcessInput, run_day
 from aoc_rust import get_frequency_shifts_raw_input
 
 
-use_rust = False
+use_rust = True
 
 
 def run_all(example_run: Union[int, bool]):
