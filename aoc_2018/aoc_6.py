@@ -60,7 +60,7 @@ def run_all(example_run: Union[int, bool]):
         result_part1, result_part2 = find_max_nrs_and_region_size(
             [(int(x.real), int(x.imag)) for x in candidate_points],
             [(int(x.real), int(x.imag)) for x in points],
-            (32 if example_run else 10000))
+            (32 if example_run else 10000), True)
     else:
         for pt in candidate_points:
             this_count = 1
