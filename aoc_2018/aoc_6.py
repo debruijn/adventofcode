@@ -1,8 +1,10 @@
 from typing import Union
 from util.util import ProcessInput, run_day
 from statistics import median
+from aoc_rust import find_max_nrs_and_region_size  # find_max_numbers, find_region_size
 
 debug = False
+use_rust = True
 
 
 def run_all(example_run: Union[int, bool]):
@@ -54,61 +56,67 @@ def run_all(example_run: Union[int, bool]):
 
         return list(set(shifts))
 
-    for pt in candidate_points:
+    if use_rust:  # Need to convert complex numbers to tuples and convert back to Complex<isize> in Rust
+        result_part1, result_part2 = find_max_nrs_and_region_size(
+            [(int(x.real), int(x.imag)) for x in candidate_points],
+            [(int(x.real), int(x.imag)) for x in points],
+            (32 if example_run else 10000))
+    else:
+        for pt in candidate_points:
+            this_count = 1
+            this_dist = 0
+            curr_count = 1
+            stop = False
+            while not stop:
+                this_dist += 1
+                points_at_dist = [pt + x for x in get_dist_shift(this_dist)]
+                for check_pt in points_at_dist:
+                    this_closest = True
+                    for other_pt in [x for x in points if x != pt]:
+                        if (abs(check_pt.imag - pt.imag) + abs(check_pt.real - pt.real) >=
+                                abs(check_pt.imag - other_pt.imag) + abs(check_pt.real - other_pt.real)):
+                            this_closest = False
+                            break
+                    if this_closest:
+                        curr_count += 1
+                if curr_count == this_count:
+                    stop = True
+                else:
+                    this_count = curr_count
+                    if debug:
+                        print(f'For point {pt}, now at distance {this_dist} with currently {this_count} numbers.')
+
+            point_counts[pt] = this_count
+
+        result_part1 = max(point_counts.values())
+
+        # Part 2: start in the middle (which I had tested) or better in the update: start at the median.
+        # Then keep expanding the region to consider to be 1 wider until that doesn't lead to new valid points in the region
+        # Better version: make a queue of those "bordering the ones in the region but not yet checked themselves" to avoid
+        #   checking in a direction that is already outside the region but at the same distance of 'start' as another
+        #   direction that still has points in the region
+
+        # OLD: start = int(round(mean(extremes_real))) + int(round(mean(extremes_imag))) * 1j
+        start = int(median([x.real for x in points])) + int(median([x.imag for x in points])) * 1j
         this_count = 1
         this_dist = 0
         curr_count = 1
         stop = False
         while not stop:
             this_dist += 1
-            points_at_dist = [pt + x for x in get_dist_shift(this_dist)]
+            points_at_dist = [start + x for x in get_dist_shift(this_dist)]
             for check_pt in points_at_dist:
-                this_closest = True
-                for other_pt in [x for x in points if x != pt]:
-                    if (abs(check_pt.imag - pt.imag) + abs(check_pt.real - pt.real) >=
-                            abs(check_pt.imag - other_pt.imag) + abs(check_pt.real - other_pt.real)):
-                        this_closest = False
-                        break
-                if this_closest:
+                total_dist = sum([abs(check_pt.imag - x.imag) + abs(check_pt.real - x.real) for x in points])
+                if total_dist < (32 if example_run else 10000):
                     curr_count += 1
             if curr_count == this_count:
                 stop = True
             else:
                 this_count = curr_count
                 if debug:
-                    print(f'For point {pt}, now at distance {this_dist} with currently {this_count} numbers.')
+                    print(f'For finding the region, now at distance {this_dist} with currently {this_count} numbers.')
 
-        point_counts[pt] = this_count
-
-    result_part1 = max(point_counts.values())
-
-    # Part 2: start in the middle (which I had tested) or better in the update: start at the median.
-    # Then keep expanding the region to consider to be 1 wider until that doesn't lead to new valid points in the region
-    # Better version: make a queue of those "bordering the ones in the region but not yet checked themselves" to avoid
-    #   checking in a direction that is already outside the region but at the same distance of 'start' as another
-    #   direction that still has points in the region
-
-    # OLD: start = int(round(mean(extremes_real))) + int(round(mean(extremes_imag))) * 1j
-    start = int(median([x.real for x in points])) + int(median([x.imag for x in points])) * 1j
-    this_count = 1
-    this_dist = 0
-    curr_count = 1
-    stop = False
-    while not stop:
-        this_dist += 1
-        points_at_dist = [start + x for x in get_dist_shift(this_dist)]
-        for check_pt in points_at_dist:
-            total_dist = sum([abs(check_pt.imag - x.imag) + abs(check_pt.real - x.real) for x in points])
-            if total_dist < (32 if example_run else 10000):
-                curr_count += 1
-        if curr_count == this_count:
-            stop = True
-        else:
-            this_count = curr_count
-            if debug:
-                print(f'For finding the region, now at distance {this_dist} with currently {this_count} numbers.')
-
-    result_part2 = curr_count
+        result_part2 = curr_count
 
     extra_out = {'Number of points in input': len(data),
                  'Size of region covered by points':
