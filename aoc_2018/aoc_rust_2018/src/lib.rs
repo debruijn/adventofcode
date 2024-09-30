@@ -6,6 +6,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day8;
 mod day14;
 
 #[pymodule]
@@ -21,6 +22,8 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(day5::run_polymerization, m)?)?;
     m.add_function(wrap_pyfunction!(day6::find_max_nrs_and_region_size, m)?)?;
     // m.add_function(wrap_pyfunction!(day6::find_region_size, m)?)?;
+
+    m.add_function(wrap_pyfunction!(day8::run_process, m)?)?;
 
     m.add_function(wrap_pyfunction!(day14::find_recipe, m)?)?;
     Ok(())
