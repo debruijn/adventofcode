@@ -1,40 +1,48 @@
-use std::collections::HashMap;
-use pyo3::pyfunction;
 use counter::Counter;
 use defaultmap::DefaultHashMap;
-
+use pyo3::pyfunction;
+use std::collections::HashMap;
 
 fn most_sleepy_part_1(count_asleep: &HashMap<isize, Counter<isize>>) -> isize {
     // Part 1
-    let most_sleepy_guard = count_asleep.keys().into_iter().max_by_key(
-        |x| count_asleep[x].total::<usize>()).unwrap();
+    let most_sleepy_guard = count_asleep
+        .keys()
+        .into_iter()
+        .max_by_key(|x| count_asleep[x].total::<usize>())
+        .unwrap();
     let most_sleepy_minute = count_asleep[most_sleepy_guard].k_most_common_ordered(1)[0].0;
     most_sleepy_guard * most_sleepy_minute
 }
-
 
 fn most_sleepy_part_2(count_asleep: &HashMap<isize, Counter<isize>>) -> isize {
     // Part 1
-    let most_sleepy_guard = count_asleep.keys().into_iter().max_by_key(
-        |x| count_asleep[x].k_most_common_ordered(1)[0].1).unwrap();
+    let most_sleepy_guard = count_asleep
+        .keys()
+        .into_iter()
+        .max_by_key(|x| count_asleep[x].k_most_common_ordered(1)[0].1)
+        .unwrap();
     let most_sleepy_minute = count_asleep[most_sleepy_guard].k_most_common_ordered(1)[0].0;
 
     most_sleepy_guard * most_sleepy_minute
 }
 
-
 fn row_to_minute(row: &str) -> isize {
-    row.split("]").next().unwrap().
-        split(" ").last().unwrap().
-        split(":").last().unwrap().
-        parse().expect("Should be integer from input format")
+    row.split("]")
+        .next()
+        .unwrap()
+        .split(" ")
+        .last()
+        .unwrap()
+        .split(":")
+        .last()
+        .unwrap()
+        .parse()
+        .expect("Should be integer from input format")
 }
-
 
 // 2018 day 4 in Rust
 #[pyfunction]
 pub fn get_most_sleepy_guards(mut input: Vec<String>, sorted: bool) -> (isize, isize) {
-
     if !sorted {
         input.sort();
     }
@@ -46,8 +54,11 @@ pub fn get_most_sleepy_guards(mut input: Vec<String>, sorted: bool) -> (isize, i
     for row in input.iter() {
         if row.ends_with("begins shift") {
             curr_guard = row[row.find("#").unwrap() + 1..]
-                .split(" ").next().unwrap()
-                .parse().expect("Should be integer from input format");
+                .split(" ")
+                .next()
+                .unwrap()
+                .parse()
+                .expect("Should be integer from input format");
         } else if row.ends_with("falls asleep") {
             start_sleep = row_to_minute(row);
         } else {
@@ -58,5 +69,8 @@ pub fn get_most_sleepy_guards(mut input: Vec<String>, sorted: bool) -> (isize, i
     }
 
     let count_asleep: HashMap<isize, Counter<isize>> = HashMap::from(count_asleep);
-    (most_sleepy_part_1(&count_asleep), most_sleepy_part_2(&count_asleep))
+    (
+        most_sleepy_part_1(&count_asleep),
+        most_sleepy_part_2(&count_asleep),
+    )
 }

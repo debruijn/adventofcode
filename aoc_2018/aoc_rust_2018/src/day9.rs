@@ -1,5 +1,5 @@
-use std::collections::VecDeque;
 use pyo3::pyfunction;
+use std::collections::VecDeque;
 
 // 2018 day 9, utility function in Rust
 #[pyfunction]

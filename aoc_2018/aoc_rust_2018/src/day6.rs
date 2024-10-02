@@ -1,19 +1,18 @@
-use std::thread;
-use std::sync::{Arc, Mutex};
-use pyo3::pyfunction;
 use num::complex::Complex;
 use num::ToPrimitive;
+use pyo3::pyfunction;
+use std::sync::{Arc, Mutex};
+use std::thread;
 
 fn get_dist_shift(dist: isize, pt: Complex<isize>) -> Vec<Complex<isize>> {
     let mut points: Vec<Complex<isize>> = Vec::new();
-    points.extend((0..(dist+1)).map(|x| pt + Complex::new(x, dist - x)));
+    points.extend((0..(dist + 1)).map(|x| pt + Complex::new(x, dist - x)));
     points.extend((0..dist).map(|x| pt + Complex::new(x, x - dist)));
-    points.extend((1..(dist+1)).map(|x| pt + Complex::new(-1*x, dist - x)));
-    points.extend((1..dist).map(|x| pt + Complex::new(-1*x, x - dist)));
+    points.extend((1..(dist + 1)).map(|x| pt + Complex::new(-1 * x, dist - x)));
+    points.extend((1..dist).map(|x| pt + Complex::new(-1 * x, x - dist)));
 
     points
 }
-
 
 // 2018 day 6, utility function in Rust for part 1
 fn find_max_numbers<'a>(cands: Vec<Complex<isize>>, all_pts: Vec<Complex<isize>>) -> isize {
@@ -31,15 +30,16 @@ fn find_max_numbers<'a>(cands: Vec<Complex<isize>>, all_pts: Vec<Complex<isize>>
             'for_label: for check_pt in pts_at_dist.iter() {
                 let check_dist = check_pt.im.abs_diff(pt.im) + check_pt.re.abs_diff(pt.re);
                 for other_pt in all_pts.iter().filter(|x| x.ne(&pt)) {
-                    let other_dist = check_pt.im.abs_diff(other_pt.im) + check_pt.re.abs_diff(other_pt.re);
+                    let other_dist =
+                        check_pt.im.abs_diff(other_pt.im) + check_pt.re.abs_diff(other_pt.re);
                     if other_dist <= check_dist {
-                        continue 'for_label
+                        continue 'for_label;
                     }
                 }
                 curr_count += 1;
             }
             if curr_count == this_count {
-                break 'loop_label
+                break 'loop_label;
             } else {
                 this_count = curr_count;
             }
@@ -60,10 +60,11 @@ fn find_region_size<'a>(all_pts: &Vec<Complex<isize>>, bound: usize) -> isize {
     let mut this_dist = 0;
     let mut curr_count = 1;
     loop {
-        this_dist +=1;
+        this_dist += 1;
         let pts_at_dist = get_dist_shift(this_dist, center);
         for check_pt in pts_at_dist.iter() {
-            let total_dist = all_pts.iter()
+            let total_dist = all_pts
+                .iter()
                 .map(|pt| check_pt.im.abs_diff(pt.im) + check_pt.re.abs_diff(pt.re))
                 .sum::<usize>();
             if total_dist < bound {
@@ -71,7 +72,7 @@ fn find_region_size<'a>(all_pts: &Vec<Complex<isize>>, bound: usize) -> isize {
             }
         }
         if curr_count == this_count {
-            break
+            break;
         } else {
             this_count = curr_count;
         }
@@ -80,14 +81,15 @@ fn find_region_size<'a>(all_pts: &Vec<Complex<isize>>, bound: usize) -> isize {
 }
 
 #[pyfunction]
-pub fn find_max_nrs_and_region_size<'a>(cands: Vec<(isize, isize)>,
-                                        all_pts: Vec<(isize, isize)>,
-                                        bound: usize, do_parallel: bool) -> (isize, isize) {
+pub fn find_max_nrs_and_region_size<'a>(
+    cands: Vec<(isize, isize)>,
+    all_pts: Vec<(isize, isize)>,
+    bound: usize,
+    do_parallel: bool,
+) -> (isize, isize) {
     // Convert input to vectors of complex numbers since Maturin could not do that
-    let cands: Vec<Complex<isize>> = cands.iter().
-        map(|x| Complex::new(x.0, x.1)).collect();
-    let all_pts: Vec<Complex<isize>> = all_pts.iter().
-        map(|x| Complex::new(x.0, x.1)).collect();
+    let cands: Vec<Complex<isize>> = cands.iter().map(|x| Complex::new(x.0, x.1)).collect();
+    let all_pts: Vec<Complex<isize>> = all_pts.iter().map(|x| Complex::new(x.0, x.1)).collect();
 
     // Answers per part
     let part2 = find_region_size(&all_pts, bound);
@@ -99,8 +101,10 @@ pub fn find_max_nrs_and_region_size<'a>(cands: Vec<(isize, isize)>,
     (part1, part2)
 }
 
-fn find_max_numbers_concurrently<'a>(cands: Vec<Complex<isize>>,
-                                     all_pts: Vec<Complex<isize>>) -> isize {
+fn find_max_numbers_concurrently<'a>(
+    cands: Vec<Complex<isize>>,
+    all_pts: Vec<Complex<isize>>,
+) -> isize {
     // Target variable
     let counts = Arc::new(Mutex::new(Vec::new()));
     let mut handles = Vec::new();
@@ -120,28 +124,35 @@ fn find_max_numbers_concurrently<'a>(cands: Vec<Complex<isize>>,
                 'for_label: for check_pt in pts_at_dist.iter() {
                     let check_dist = check_pt.im.abs_diff(pt.im) + check_pt.re.abs_diff(pt.re);
                     for other_pt in this_all_pts.iter().filter(|x| x.ne(&&pt)) {
-                        let other_dist = check_pt.im.abs_diff(other_pt.im) + check_pt.re.abs_diff(other_pt.re);
+                        let other_dist =
+                            check_pt.im.abs_diff(other_pt.im) + check_pt.re.abs_diff(other_pt.re);
                         if other_dist <= check_dist {
-                            continue 'for_label
+                            continue 'for_label;
                         }
                     }
                     curr_count += 1;
                 }
                 if curr_count == this_count {
-                    break 'loop_label
+                    break 'loop_label;
                 } else {
                     this_count = curr_count;
                 }
             }
             counts_shared.lock().unwrap().push(curr_count)
-            }
-        );
+        });
         handles.push(handle);
     }
     for handle in handles {
         handle.join().unwrap();
     }
 
-    let ans= counts.lock().unwrap().iter().max().unwrap().to_isize().unwrap();
+    let ans = counts
+        .lock()
+        .unwrap()
+        .iter()
+        .max()
+        .unwrap()
+        .to_isize()
+        .unwrap();
     ans
 }
