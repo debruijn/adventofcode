@@ -8,6 +8,7 @@ mod day5;
 mod day6;
 mod day8;
 mod day9;
+mod day10;
 mod day14;
 
 #[pymodule]
@@ -26,6 +27,7 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     m.add_function(wrap_pyfunction!(day8::run_process, m)?)?;
     m.add_function(wrap_pyfunction!(day9::find_winning_score, m)?)?;
+    m.add_function(wrap_pyfunction!(day10::find_message_in_the_sky, m)?)?;
 
     m.add_function(wrap_pyfunction!(day14::find_recipe, m)?)?;
     Ok(())
