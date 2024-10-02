@@ -9,7 +9,7 @@ pub fn get_frequency_shifts<'a>(input: Vec<isize>) -> isize {
     for c in input.into_iter().cycle() {
         curr_freq += c;
         if freqs.contains(&curr_freq) {
-            break
+            break;
         } else {
             freqs.replace(curr_freq);
         }
@@ -25,7 +25,7 @@ pub fn get_frequency_shifts_raw_input<'a>(input: String) -> isize {
     for c in v.into_iter().cycle() {
         curr_freq += c;
         if freqs.contains(&curr_freq) {
-            break
+            break;
         } else {
             freqs.replace(curr_freq);
         }

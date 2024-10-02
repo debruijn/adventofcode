@@ -1,6 +1,8 @@
 use pyo3::prelude::*;
 
 mod day1;
+mod day10;
+mod day14;
 mod day2;
 mod day3;
 mod day4;
@@ -8,11 +10,9 @@ mod day5;
 mod day6;
 mod day8;
 mod day9;
-mod day10;
-mod day14;
 
 #[pymodule]
-#[pyo3(name="aoc_rust")]
+#[pyo3(name = "aoc_rust")]
 fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(day1::get_frequency_shifts, m)?)?;
     m.add_function(wrap_pyfunction!(day1::get_frequency_shifts_raw_input, m)?)?;

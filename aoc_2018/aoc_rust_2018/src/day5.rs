@@ -7,10 +7,12 @@ pub fn run_polymerization<'a>(input: Vec<u8>) -> usize {
     for &c in input.iter() {
         match v.last() {
             None => v.push(c),
-            Some(&d) => if d.to_ascii_lowercase() == c.to_ascii_lowercase() && d != c {
-                v.pop();
-            } else {
-                v.push(c);
+            Some(&d) => {
+                if d.to_ascii_lowercase() == c.to_ascii_lowercase() && d != c {
+                    v.pop();
+                } else {
+                    v.push(c);
+                }
             }
         }
     }
