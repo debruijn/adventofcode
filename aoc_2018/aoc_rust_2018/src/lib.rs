@@ -1,32 +1,32 @@
 use pyo3::prelude::*;
 
-mod day1;
+mod day01;
+mod day02;
+mod day03;
+mod day04;
+mod day05;
+mod day06;
+mod day08;
+mod day09;
 mod day10;
 mod day14;
-mod day2;
-mod day3;
-mod day4;
-mod day5;
-mod day6;
-mod day8;
-mod day9;
 
 #[pymodule]
 #[pyo3(name = "aoc_rust")]
 fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(day1::get_frequency_shifts, m)?)?;
-    m.add_function(wrap_pyfunction!(day1::get_frequency_shifts_raw_input, m)?)?;
+    m.add_function(wrap_pyfunction!(day01::get_frequency_shifts, m)?)?;
+    m.add_function(wrap_pyfunction!(day01::get_frequency_shifts_raw_input, m)?)?;
     // m.add_function(wrap_pyfunction!(day2::get_box_checksums, m)?)?;
     // m.add_function(wrap_pyfunction!(day2::get_correct_box_ids, m)?)?;
-    m.add_function(wrap_pyfunction!(day2::get_box_checksum_and_correct_id, m)?)?;
-    m.add_function(wrap_pyfunction!(day3::process_contested_claims, m)?)?;
-    m.add_function(wrap_pyfunction!(day4::get_most_sleepy_guards, m)?)?;
-    m.add_function(wrap_pyfunction!(day5::run_polymerization, m)?)?;
-    m.add_function(wrap_pyfunction!(day6::find_max_nrs_and_region_size, m)?)?;
+    m.add_function(wrap_pyfunction!(day02::get_box_checksum_and_correct_id, m)?)?;
+    m.add_function(wrap_pyfunction!(day03::process_contested_claims, m)?)?;
+    m.add_function(wrap_pyfunction!(day04::get_most_sleepy_guards, m)?)?;
+    m.add_function(wrap_pyfunction!(day05::run_polymerization, m)?)?;
+    m.add_function(wrap_pyfunction!(day06::find_max_nrs_and_region_size, m)?)?;
     // m.add_function(wrap_pyfunction!(day6::find_region_size, m)?)?;
 
-    m.add_function(wrap_pyfunction!(day8::run_process, m)?)?;
-    m.add_function(wrap_pyfunction!(day9::find_winning_score, m)?)?;
+    m.add_function(wrap_pyfunction!(day08::run_process, m)?)?;
+    m.add_function(wrap_pyfunction!(day09::find_winning_score, m)?)?;
     m.add_function(wrap_pyfunction!(day10::find_message_in_the_sky, m)?)?;
 
     m.add_function(wrap_pyfunction!(day14::find_recipe, m)?)?;
