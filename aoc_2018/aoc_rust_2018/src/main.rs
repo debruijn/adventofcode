@@ -7,8 +7,6 @@ use aoc_rust;
 struct Cli {
     #[arg(short, long, default_value_t = 0)]
     day: isize,
-    #[arg(short, long, default_value_t = true)]
-    print: bool
 }
 
 fn main() {
@@ -20,7 +18,5 @@ fn main() {
     let before = Instant::now();
     let res = aoc_rust::run(args.day);
     let after = Instant::now();
-    if args.print {
-        println!("{}, {} in {:?}", res.0, res.1, after - before)
-    }
+    println!("{}, {} in {:?}", res.0, res.1, after - before)
 }
