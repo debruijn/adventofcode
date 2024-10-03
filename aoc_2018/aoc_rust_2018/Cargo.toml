@@ -3,10 +3,15 @@ name = "aoc_rust"
 version = "0.6.0"
 edition = "2021"
 
+[[bin]]
+name = "aoc_rust"
+path = "src/main.rs"
+
 [lib]
 name = "aoc_rust"
+path = "src/lib.rs"
 # "cdylib" is necessary to produce a shared library for Python to import from.
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]
 
 [dependencies]
 rand = "0.8.5"
@@ -14,6 +19,7 @@ itertools = "0.13.0"
 counter = "0.6.0"
 defaultmap = "0.6.0"
 num = "0.4.3"
+clap = { version = "4.5.19", features = ["derive"] }
 
 [dependencies.pyo3]
 version = "0.22.3"

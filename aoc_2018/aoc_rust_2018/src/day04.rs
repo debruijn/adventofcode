@@ -74,3 +74,8 @@ pub fn get_most_sleepy_guards(mut input: Vec<String>, sorted: bool) -> (isize, i
         most_sleepy_part_2(&count_asleep),
     )
 }
+
+pub fn run(input: Vec<String>) -> (String, String) {
+    let res = get_most_sleepy_guards(input, false);
+    (format!("{}", res.0), format!("{}", res.1))
+}
