@@ -1,4 +1,5 @@
 use pyo3::prelude::*;
+mod util;
 
 mod day01;
 mod day02;
@@ -13,7 +14,7 @@ mod day14;
 
 #[pymodule]
 #[pyo3(name = "aoc_rust")]
-fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
+pub fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(day01::get_frequency_shifts, m)?)?;
     m.add_function(wrap_pyfunction!(day01::get_frequency_shifts_raw_input, m)?)?;
     // m.add_function(wrap_pyfunction!(day2::get_box_checksums, m)?)?;
@@ -31,4 +32,15 @@ fn aoc_rust_2018(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     m.add_function(wrap_pyfunction!(day14::find_recipe, m)?)?;
     Ok(())
+}
+
+pub fn run(day: isize) -> (String, String) {
+    let input_str = util::read_input(2018, day);
+    let res = match day {
+        2 => day02::run(input_str),
+        4 => day04::run(input_str),
+        5 => day05::run(input_str),
+        _ => (String::from("To do.."), String::new())
+    };
+    res
 }

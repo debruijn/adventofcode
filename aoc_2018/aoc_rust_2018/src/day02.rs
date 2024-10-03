@@ -55,6 +55,10 @@ fn get_correct_box_ids<'a>(input: Vec<String>) -> String {
 
 // 2018 day 2 together
 #[pyfunction]
-pub fn get_box_checksum_and_correct_id<'a>(input: Vec<String>) -> (isize, String) {
-    (get_box_checksums(input.clone()), get_correct_box_ids(input))
+pub fn get_box_checksum_and_correct_id<'a>(input: Vec<String>) -> (String, String) {
+    (get_box_checksums(input.clone()).to_string(), get_correct_box_ids(input))
+}
+
+pub fn run(input: Vec<String>) -> (String, String) {
+    get_box_checksum_and_correct_id(input)
 }
