@@ -5,6 +5,8 @@ from functools import wraps, partial
 from itertools import accumulate, chain, islice
 from time import time
 from typing import TypeVar
+import subprocess
+import os
 import aocd
 
 _VT = TypeVar("_VT")
@@ -202,3 +204,9 @@ def print_res(results, example_run):
         print(f'Descriptives:')
         for key, val in results[2].items():
             print(f' {key}: {val}')
+
+
+def run_rust(year, day):
+    print("\n")
+    os.chdir(f"aoc_rust_{year}")
+    subprocess.call(f"target/debug/aoc_rust --day {day}", shell=True)
