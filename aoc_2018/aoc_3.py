@@ -1,13 +1,12 @@
 from collections import Counter
+from functools import partial
 from typing import Union
-from util.util import ProcessInput, run_day, isnumeric
+from util.util import ProcessInput, run_day, isnumeric, run_rust
 from aoc_rust import process_contested_claims
 
 
-use_rust = True
 
-
-def run_all(example_run: Union[int, bool]):
+def run_all(example_run: Union[int, bool], use_rust=False):
     data = ProcessInput(example_run=example_run, day=3, year=2018).data
     data = [[int(x) for x in claim.replace(',', ' ').replace('x', ' ').replace(
         ':', '').replace('#', '').replace('@', '').split(' ') if isnumeric(x)]
@@ -57,4 +56,6 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1])
+    run_day(partial(run_all, use_rust=False), [1])
+    run_day(partial(run_all, use_rust=True), [1])
+    run_rust(2018, 3)

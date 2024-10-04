@@ -1,13 +1,11 @@
 from collections import Counter, defaultdict
+from functools import partial
 from typing import Union
-from util.util import ProcessInput, run_day
+from util.util import ProcessInput, run_day, run_rust
 from aoc_rust import get_most_sleepy_guards
 
 
-use_rust=True
-
-
-def run_all(example_run: Union[int, bool]):
+def run_all(example_run: Union[int, bool], use_rust=False):
 
     data = ProcessInput(example_run=example_run, day=4, year=2018).data
 
@@ -61,4 +59,6 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1])
+    run_day(partial(run_all, use_rust=False), [1])
+    run_day(partial(run_all, use_rust=True), [1])
+    run_rust(2018, 4)
