@@ -1,13 +1,13 @@
 from collections import defaultdict
+from functools import partial
 from typing import Union
-from util.util import ProcessInput, run_day
+from util.util import ProcessInput, run_day, run_rust
 from aoc_rust import run_process
 
 debug = False
-use_rust = True
 
 
-def run_all(example_run: Union[int, bool]):
+def run_all(example_run: Union[int, bool], use_rust=False):
 
     data = ProcessInput(example_run=example_run, day=8, year=2018).as_list_of_ints().data[0]
 
@@ -56,4 +56,6 @@ def run_all(example_run: Union[int, bool]):
 
 
 if __name__ == "__main__":
-    run_day(run_all, [1])
+    run_day(partial(run_all, use_rust=False), [1])
+    run_day(partial(run_all, use_rust=True), [1])
+    run_rust(2018, 8)
