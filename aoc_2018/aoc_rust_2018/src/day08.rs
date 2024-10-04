@@ -1,6 +1,7 @@
 use defaultmap::DefaultHashMap;
 use pyo3::pyfunction;
 use std::collections::HashMap;
+use itertools::Itertools;
 
 // 2018 day 8, utility function in Rust
 fn get_metadata_sum<'a>(
@@ -50,4 +51,10 @@ pub fn run_process<'a>(data: Vec<usize>) -> (usize, usize, HashMap<usize, Vec<us
 
     let res = get_metadata_sum(&data, &mut nodes, &mut children, 0, 0);
     (res.0, res.1, nodes)
+}
+
+pub fn run(input: Vec<String>) -> (String, String) {
+    let input = input[0].split(' ').map(|x| x.parse().unwrap()).collect_vec();
+    let res = run_process(input);
+    (format!("{}", res.0), format!("{}", res.1))
 }
