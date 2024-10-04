@@ -38,9 +38,11 @@ pub fn run(day: isize) -> (String, String) {
     let input_str = util::read_input(2018, day);
     let res = match day {
         2 => day02::run(input_str),
+        3 => day03::run(input_str),
         4 => day04::run(input_str),
         5 => day05::run(input_str),
-        _ => (String::from("To do.."), String::new())
+        8 => day08::run(input_str),
+        _ => (String::from("To do.."), String::new()),
     };
     res
 }
