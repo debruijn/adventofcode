@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use pyo3::pyfunction;
 use std::collections::HashMap;
 
@@ -35,4 +36,32 @@ pub fn process_contested_claims<'a>(input: Vec<[i16; 5]>) -> (usize, i16) {
         return (count_contested_claims, claim[0]);
     }
     (count_contested_claims, 0)
+}
+
+fn get_claim(input: &str) -> [i16; 5] {
+    let input = input.split(' ').collect_vec();
+
+    let locs: Vec<i16> = input[2]
+        .replace(':', "")
+        .split(',')
+        .map(|x| x.parse::<i16>().unwrap())
+        .collect_vec();
+    let dims: Vec<i16> = input[3]
+        .split('x')
+        .map(|x| x.parse::<i16>().unwrap())
+        .collect_vec();
+    let out: [i16; 5] = [
+        input[0][1..].parse().unwrap(),
+        locs[0],
+        locs[1],
+        dims[0],
+        dims[1],
+    ];
+    out
+}
+
+pub fn run(input: Vec<String>) -> (String, String) {
+    let input = input.iter().map(|x| get_claim(x)).collect_vec();
+    let res = process_contested_claims(input);
+    (format!("{}", res.0), format!("{}", res.1))
 }
