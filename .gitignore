@@ -10,6 +10,7 @@ aoc_2018/aoc_rust_2018/input
 
 ### Python template
 .idea
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
