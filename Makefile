@@ -1,6 +1,6 @@
-DAY=23
+DAY=1
 
-YEAR=2021
+YEAR=2024
 N_EXAMPLES=1
 
 create_year_folder:
