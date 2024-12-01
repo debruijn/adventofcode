@@ -10,16 +10,8 @@ def run_all(example_run: Union[int, bool]):
         left.append(i)
         right.append(j)
 
-    left.sort()
-    right.sort()
-
-    result_part1 = sum(abs(i - j) for (i, j) in zip(left, right))
-
-    score = 0
-    for i in left:
-        score += i * right.count(i)
-
-    result_part2 = score
+    result_part1 = sum(abs(i - j) for (i, j) in zip(sorted(left), sorted(right)))
+    result_part2 = sum([i * right.count(i) for i in left])
 
     extra_out = {'Number of rows in input': len(data)}  # TODO: create dict of additional things to have them printed
 
