@@ -24,7 +24,7 @@ def run_all(example_run: Union[int, bool]):
     page_key = cmp_to_key(partial(comp_func, rules=rules))
     pages = sorted(pages, key=page_key)
 
-    # With the sorted pages, just check whether a update row is following that sort or not
+    # With the sorted pages, just check whether an update row is following that sort or not
     sum_of_correct_middle_pages = 0
     sum_of_incorrect_middle_pages = 0
     for row in data[1]:
