@@ -24,20 +24,20 @@ def run_all(example_run: Union[int, bool]):
     data = ProcessInput(example_run=example_run, day=6, year=2024).data
 
     # Process input into open/obstructions/all lists
-    open_locs = list()
-    obstructions = list()
+    open_locs = set()
+    obstructions = set()
     loc = -1
     for i, row in enumerate(data):
         for j, el in enumerate(row):
             if el == '.':
-                open_locs.append(i + j*1j)
+                open_locs.add(i + j*1j)
             elif el == '#':
-                obstructions.append(i + j*1j)
+                obstructions.add(i + j*1j)
             else:
-                open_locs.append(i + j*1j)
+                open_locs.add(i + j*1j)
                 loc = i + j*1j
     start_loc = loc
-    all_locs = open_locs + obstructions
+    all_locs = open_locs.union(obstructions)
 
     # Part 1 path
     initial_path = run_grid(all_locs, obstructions, start_loc)[0]
@@ -48,7 +48,7 @@ def run_all(example_run: Union[int, bool]):
         if el == start_loc or el in obstr_hist:
             continue
         obstr_hist.add(el)
-        if run_grid(all_locs, obstructions + [el], el - dirn, dirn)[1]:
+        if run_grid(all_locs, obstructions.union({el}), el - dirn, dirn)[1]:
             loop_locs.add(el)
 
     result_part1 = len(set(x[0] for x in initial_path))
