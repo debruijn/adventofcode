@@ -12,7 +12,7 @@ def run_grid(all_locs, obstructions, start, dirn=-1):
             dirn *= -1j
             continue
         if (loc + dirn, dirn) in visited_dir:
-            return 0, True
+            return {}, True
         loc = loc + dirn
         visited_dir.add((loc, dirn))
 
