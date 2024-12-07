@@ -11,7 +11,7 @@ I was still using numpy and pandas a lot (which is fine, it is just not my goal 
 without external packages for pypy).
 
 Next to this I also want to start experimenting more with using Rust for key performance bottlenecks from within Python.
-An early example of this can be found in 2018/day5.
+An early example of this can be found in the aoc_2018 folder.
 
 ## Status per year
 - 2015: Done
@@ -23,12 +23,11 @@ An early example of this can be found in 2018/day5.
 - 2021: Done (except for using aocd)
 - 2022: Done (except for using aocd)
 - 2023: Done
+- 2024: Doing
 
 ## General todo's
-Outside simply doing the coding challenges, I might want to come back to these when all has been done to:
-- Automatically pull and cache data - to avoid committing data to the repo but still use it everywhere (ongoing process)
+Outside simply doing the coding challenges in a reasonable run time, you can (but might not) find other commits as well:
 - Improve run time: ideally they all run under 1 sec per day and under 10 secs per year
 - More utility functions for common operations or data structures
-- Redo days that use numpy without numpy such that I can leverage pypy more
-- Combining previous 2: create numpy-replacing utility functions in pure python
-- Redo days in other languages I might want to learn, like Rust or Go
+- Redo days from 2021/2022 that use numpy without numpy
+- Redo (more) days in other languages I might want to learn, like Rust or Go, or calling those implementations in Python
