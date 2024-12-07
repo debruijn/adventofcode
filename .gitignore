@@ -4,6 +4,7 @@ local/*
 
 # Ignore example data if I have that copied from the website for live days when aocd is not yet working for examples
 */*exampledata*
+*/*_data*
 
 # Symlink within my rust folder to the aocd cache containing .txt files with the inputs named "YYYY_DD_input.txt"
 aoc_2018/aoc_rust_2018/input
