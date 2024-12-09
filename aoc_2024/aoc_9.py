@@ -8,10 +8,8 @@ def run_all(example_run: Union[int, bool]):
 
     # Part 1 processing: full list of elements as on website (but space instead of a period)
     file_sys = []
-    curr_ind = 0
-    for batch in batched(disk_map, 2):
+    for curr_ind, batch in enumerate(batched(disk_map, 2)):
         file_sys.extend([str(curr_ind)] * int(batch[0]))
-        curr_ind += 1
         if len(batch) > 1:
             file_sys.extend([' '] * int(batch[1]))
 
@@ -27,16 +25,14 @@ def run_all(example_run: Union[int, bool]):
 
     # Part 2 processing: list of tuples: (id, count)
     file_sys = []
-    curr_ind = 0
-    for batch in batched(disk_map, 2):
-        file_sys.extend([(curr_ind, int(batch[0]))])
-        curr_ind += 1
+    for curr_ind, batch in enumerate(batched(disk_map, 2)):
+        file_sys.append((curr_ind, int(batch[0])))
         if len(batch) > 1:
-            file_sys.extend([(-1, int(batch[1]))])
+            file_sys.append((-1, int(batch[1])))
 
     # Part 2 calculation: go over all ids from high to low, find its location and length, and find the earliest free
     # space that could fit it. In case new free space is next to existing free space, merge.
-    for i in reversed(range(curr_ind)):
+    for i in reversed(range(curr_ind + 1)):
         len_ind = [x[1] for x in file_sys if x[0] == i][0]
         loc_ind = file_sys.index((i, len_ind))
 
