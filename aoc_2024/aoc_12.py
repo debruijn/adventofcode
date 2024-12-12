@@ -41,14 +41,11 @@ def run_all(example_run: Union[int, bool]):
                 for diff in [1, -1, 1j, -1j]:
                     if loc + diff not in region:
                         perimeter += 1
-                # Detect corners (since n_corners = n_sides): test in each diagonal direction whether it is corner
-                for d1, d2 in combinations([1, -1, 1j, -1j], 2):
-                    if d1 + d2 == 0:
-                        continue
-                    if loc + d1 in region and loc + d2 in region and loc + d1 + d2 not in region:  # Inside corner
+                    # Detect corners (since n_corners = n_sides): test in each diagonal direction whether it is corner
+                    if loc + diff in region and loc + diff*1j in region and loc + diff + diff*1j not in region:  # Inside corner
                         n_sides += 1
                         continue
-                    if loc + d1 not in region and loc + d2 not in region:  # Outside corner
+                    if loc + diff not in region and loc + diff*1j not in region:  # Outside corner
                         n_sides += 1
             total_price += perimeter * len(region)
             total_discount_price += n_sides * len(region)
