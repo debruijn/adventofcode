@@ -1,7 +1,7 @@
-DAY=11
+DAY=12
 
 YEAR=2024
-N_EXAMPLES=1
+N_EXAMPLES=5
 
 create_year_folder:
 	# Do this once to set up a folder for that year
