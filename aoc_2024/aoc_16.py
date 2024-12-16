@@ -2,10 +2,12 @@ import math
 from collections import defaultdict
 from typing import Union
 from util.util import ProcessInput, run_day
+import heapq
+from itertools import count
 
 
 # Ideas for speedup (since 6.2s with Pypy is a bit too slow for me):
-# - Try if heapq is faster than my defaultdict implementation
+# v Try if heapq is faster than my defaultdict implementation -> tested, not really the cases, but will use itt for now
 # - Preprocess grid to corners, and create cost to go from corner to corner (with or without rotating)
 # - Reimplement in Rust ->
 #       only need to pass free, start and target along so little overhead to Rust
@@ -27,34 +29,28 @@ def run_all(example_run: Union[int, bool]):
                 if el == 'E':
                     target = i + j*1j
 
-    # Initialize variables for algorithm: queue, hist, curr_steps, and list of result.
-    queue = defaultdict(list)
-    queue[0].append((start, dirn, []))  # loc, direction, path
-    curr_steps = 0
+    # Initialize variables for algorithm: heap as priority queue, hist, best result, and list of result.
+    heap = [(0, 0, start, dirn, [])]
+    heapq.heapify(heap)
+    counter = count()  # Utility counter as 2nd priority to avoid comparing the locations in case of tied 1st priority
     hist = defaultdict(lambda: math.inf)
     hist[(start, dirn)] = 0
-    no_increase = False
     res = []
-    while len(queue) > 0:
-        # If there are no more options for the current number of steps, increase to next best (unless we were done)
-        if len(queue[curr_steps]) == 0:
-            del queue[curr_steps]
-            if no_increase:
-                break
-            else:
-                curr_steps = min(queue.keys())
-
-        # Pop from current queue
-        loc, dirn, path = queue[curr_steps].pop()
+    best = math.inf
+    while len(heap) > 0:
+        # Pop from heap and stop if worse than found solution
+        curr_steps, _, loc, dirn, path = heapq.heappop(heap)
+        if curr_steps > best:
+            break
 
         if loc == target:  # If we are at target, we add this path to set of solutions and will no longer increase steps
-            no_increase = True  # Don't immediately break -> find others for same curr_steps
+            best = curr_steps
             res.append(path)
 
         # Add to queue: step forwards (if there is no wall)
         if loc + dirn in free and hist[(loc + dirn, dirn)] >= curr_steps + 1:
             this_path = path + [1] if len(path) == 0 or path[-1].imag != 0 else path[:-1] + [path[-1] + 1]
-            queue[curr_steps+1].append((loc+dirn, dirn, this_path))
+            heapq.heappush(heap, (curr_steps+1, next(counter), loc+dirn, dirn, this_path))
             hist[(loc+dirn, dirn)] = curr_steps + 1
 
         # Add to queue: rotate in either direction
@@ -62,7 +58,7 @@ def run_all(example_run: Union[int, bool]):
         for rot in [1j, -1j]:
             r_dirn = dirn * rot
             if loc + r_dirn in free and loc + 2 * r_dirn in free and hist[(loc + 2 * r_dirn, r_dirn)] >= curr_steps + 1002:
-                queue[curr_steps + 1002].append((loc + 2 * r_dirn, r_dirn, path + [rot, 2]))
+                heapq.heappush(heap, (curr_steps + 1002, next(counter), loc + 2 * r_dirn, r_dirn, path + [rot, 2]))
                 hist[(loc + 2 * r_dirn, r_dirn)] = curr_steps + 1002
 
     # Process resulting paths (that were compressed for memory reasons) -> which points are visited?
@@ -78,11 +74,12 @@ def run_all(example_run: Union[int, bool]):
                 loc += dir
                 spots_to_sit.add(loc)
 
-    result_part1 = curr_steps
+    result_part1 = best
     result_part2 = len(spots_to_sit)
 
     extra_out = {'Size of grid': (len(data), len(data[0])),
-                 'Number of different best routes to take': len(res)}
+                 'Number of different best routes to take': len(res),
+                 'Length of first best route': len(res[0])}
 
     return result_part1, result_part2, extra_out
 
