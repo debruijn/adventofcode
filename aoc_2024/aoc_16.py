@@ -4,6 +4,15 @@ from typing import Union
 from util.util import ProcessInput, run_day
 
 
+# Ideas for speedup (since 6.2s with Pypy is a bit too slow for me):
+# - Try if heapq is faster than my defaultdict implementation
+# - Preprocess grid to corners, and create cost to go from corner to corner (with or without rotating)
+# - Reimplement in Rust ->
+#       only need to pass free, start and target along so little overhead to Rust
+#       only need to return res and curr_steps so little overhead back as well (or can also process res in Rust)
+# - Try out networkx (although I want to be pure Python (except for Rust) as much as possible)
+
+
 def run_all(example_run: Union[int, bool]):
 
     # Process input to list of available locations, start location, target location and start direction
@@ -49,10 +58,12 @@ def run_all(example_run: Union[int, bool]):
             hist[(loc+dirn, dirn)] = curr_steps + 1
 
         # Add to queue: rotate in either direction
+        # -> Slight speedup: immediately take two steps (if both steps are in 'free') and if not possible, don't turn
         for rot in [1j, -1j]:
-            if hist[(loc, dirn * rot)] >= curr_steps + 1000:
-                queue[curr_steps + 1000].append((loc, dirn * rot, path + [rot]))
-                hist[(loc, dirn * rot)] = curr_steps + 1000
+            r_dirn = dirn * rot
+            if loc + r_dirn in free and loc + 2 * r_dirn in free and hist[(loc + 2 * r_dirn, r_dirn)] >= curr_steps + 1002:
+                queue[curr_steps + 1002].append((loc + 2 * r_dirn, r_dirn, path + [rot, 2]))
+                hist[(loc + 2 * r_dirn, r_dirn)] = curr_steps + 1002
 
     # Process resulting paths (that were compressed for memory reasons) -> which points are visited?
     spots_to_sit = {start}
