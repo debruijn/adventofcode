@@ -3,48 +3,28 @@ from typing import Union
 from util.util import ProcessInput, run_day
 
 
-debug = True  # Set to True if you want to see all partial matches in part 2's algorithm
+debug = False  # Set to True if you want to see all partial matches in part 2's algorithm
 
 
 def combo(x, reg):
-    if x <= 3:
-        return x
-    else:
-        return reg[x - 4]
+    return x if x <= 3 else reg[x - 4]
 
 
 def run_program(prog, reg):
     ptr = 0
     out = []
     while ptr < len(prog):
-        if prog[ptr] == 0:
-            reg[0] = int(reg[0] / (2**combo(prog[ptr+1], reg)))
-            ptr += 2
-        elif prog[ptr] == 1:
-            reg[1] = reg[1] ^ prog[ptr+1]
-            ptr += 2
-        elif prog[ptr] == 2:
-            reg[1] = combo(prog[ptr+1], reg) % 8
-            ptr += 2
-        elif prog[ptr] == 3:
-            if reg[0] == 0:
-                ptr += 2
-            else:
-                ptr = prog[ptr+1]
-        elif prog[ptr] == 4:
-            reg[1] = reg[1] ^ reg[2]
-            ptr += 2
-        elif prog[ptr] == 5:
-            out += [combo(prog[ptr+1], reg) % 8]
-            ptr += 2
-        elif prog[ptr] == 6:
-            reg[1] = int(reg[0] / (2**combo(prog[ptr+1], reg)))
-            ptr += 2
-        elif prog[ptr] == 7:
-            reg[2] = int(reg[0] / (2**combo(prog[ptr+1], reg)))
-            ptr += 2
-        else:
-            raise ValueError
+        this, nxt = prog[ptr], prog[ptr+1]
+        ptr += 2  # Preliminary increase ptr - we will override in case we jump
+        match this:
+            case 0: reg[0] = int(reg[0] / (2**combo(nxt, reg)))
+            case 1: reg[1] = reg[1] ^ nxt
+            case 2: reg[1] = combo(nxt, reg) % 8
+            case 3: ptr = nxt if reg[0] > 0 else ptr
+            case 4: reg[1] = reg[1] ^ reg[2]
+            case 5: out += [combo(nxt, reg) % 8]
+            case 6: reg[1] = int(reg[0] / (2**combo(nxt, reg)))
+            case 7: reg[2] = int(reg[0] / (2**combo(nxt, reg)))
     return out
 
 
@@ -119,7 +99,7 @@ def run_all(example_run: Union[int, bool]):
             else:
                 curr[-1] += 1  # There was no match -> increase final digit
 
-        result_part2 = reduce(lambda x, y: 8*x + y, curr)
+        result_part2 = reduce(lambda x, y: 8*x + y, curr)  # Convert octal (and reverse) curr to decimal number
 
     extra_out = {'Length of program': len(prog),
                  'Number of times calling the program in part 2': call_count,
