@@ -8,7 +8,8 @@ from itertools import count
 
 # Ideas for speedup (since 6.2s with Pypy is a bit too slow for me):
 # v Try if heapq is faster than my defaultdict implementation -> tested, not really the cases, but will use itt for now
-# - Preprocess grid to corners, and create cost to go from corner to corner (with or without rotating)
+# v Preprocess grid to corners, and create cost to go from corner to corner (with or without rotating)
+#   -> see aoc_16_edges.py in which I have implemented this without the rotational cost, & it speeds it up a lot
 # - Reimplement in Rust ->
 #       only need to pass free, start and target along so little overhead to Rust
 #       only need to return res and curr_steps so little overhead back as well (or can also process res in Rust)
