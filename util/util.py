@@ -1,3 +1,4 @@
+import math
 import pathlib
 from collections import defaultdict, Counter
 from collections.abc import Callable
@@ -173,6 +174,56 @@ class ProcessInput:
 
 def str_remove(string, substring):
     return string.replace(substring, "")
+
+
+def get_neighbors(i, j, grid):
+    res = []
+    if i > 0:
+        res.append(grid[i-1][j])
+    if j > 0:
+        res.append(grid[i][j-1])
+    if i < len(grid)-1:
+        res.append(grid[i+1][j])
+    if j < len(grid[0])-1:
+        res.append(grid[i][j+1])
+    return res
+
+
+def get_neighbor_count(i, j, grid, free='. '):
+    return len([x for x in get_neighbors(i, j, grid) if x in free])
+
+
+def grid_to_corners(grid, free='. ', mark=None, rot_cost=0):
+    corners = []
+    for i, row in enumerate(grid):
+        for j, el in enumerate(row):
+            if el in free and get_neighbor_count(i, j, grid, free) >= 3:
+                corners.append((i, j))
+            if mark is not None and el in mark:
+                corners.append((i, j))
+
+    dist_mapping = defaultdict(lambda: defaultdict(lambda: math.inf))
+    for pt in corners:
+        for mv in [(pt[0], pt[1] + 1), (pt[0], pt[1] - 1), (pt[0] + 1, pt[1]), (pt[0] - 1, pt[1])]:
+            if grid[mv[0]][mv[1]] not in free:
+                continue
+            steps = 1
+            prev = pt
+            while mv not in corners and get_neighbor_count(mv[0], mv[1], grid, free) == 2:
+                new = [(mv[0], mv[1] + 1), (mv[0], mv[1] - 1), (mv[0] + 1, mv[1]), (mv[0] - 1, mv[1])]
+                for nw in new:
+                    if nw == prev:
+                        continue
+                    if grid[nw[0]][nw[1]] in free:
+                        if not (nw[0] - mv[0] == mv[0] - prev[0] and nw[1] - mv[1] == mv[1] - prev[1]):
+                            steps += rot_cost
+                        prev, mv = mv, nw
+                        steps += 1
+                        break
+            if mv in corners:
+                dist_mapping[pt][mv] = min(steps, dist_mapping[pt][mv])
+
+    return dist_mapping
 
 
 # Ideas:
