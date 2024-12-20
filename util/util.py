@@ -176,6 +176,10 @@ def str_remove(string, substring):
     return string.replace(substring, "")
 
 
+def get_neighbors_cplx(loc):
+    return [loc + 1, loc - 1, loc + 1j, loc - 1j]
+
+
 def get_neighbors(i, j, grid):
     res = []
     if i > 0:
