@@ -1,4 +1,5 @@
 import functools
+from itertools import pairwise, chain
 from typing import Union
 from util.util import ProcessInput, run_day
 
@@ -16,34 +17,30 @@ locs2 = {v: k for k, v in grid2.items()}
 @functools.cache
 def path_cost(path, level, max_lvl):
     if level == max_lvl:  # Human giving instructions, so just sum(manhattan_dist + 1) for each button (+1 for A)
-        loc = start2
         dist = 0
-        for pth in path:
-            pth_loc = locs2[pth]
-            dist += abs(pth_loc.imag - loc.imag) + abs(pth_loc.real - loc.real) + 1
-            loc = pth_loc
+        path = map(locs2.get, path)
+        for loc_from, loc_to in pairwise(chain((start2,),path)):
+            dist += abs(loc_to.imag - loc_from.imag) + abs(loc_to.real - loc_from.real) + 1
         return int(dist)
     else:  # Robot giving instructions to robot, so the number of steps needs to be "thrown upwards" to the next level
-        loc = start2 if level > 0 else start1
         dist = 0
-        for pth in path:
-            pth_loc = locs2[pth] if level > 0 else locs1[pth]
-            diff_loc = pth_loc - loc
+        path = map(locs2.get, path) if level > 0 else map(locs1.get, path)
+        for loc_from, loc_to in pairwise(chain((start2 if level > 0 else start1,),path)):
+            diff_loc = loc_to - loc_from
 
             # Horizontal and vertical steps - ignoring the weird corner case
             hor = (1j,) * int(abs(diff_loc.imag)) if diff_loc.imag >= 0 else (-1j,) * int(abs(diff_loc.imag))
             vert = (1,) * int(abs(diff_loc.real)) if diff_loc.real >= 0 else (-1,) * int(abs(diff_loc.real))
 
             # Priority: left > down > other two if possible, but test if corner gets in the way of that
-            if diff_loc.imag < 0 and pth_loc.imag*1j + loc.real in (grid2 if level > 0 else grid1):
+            if diff_loc.imag < 0 and loc_to.imag*1j + loc_from.real in (grid2 if level > 0 else grid1):
                 this_path = hor + vert + (0,)
-            elif loc.imag*1j + pth_loc.real in (grid2 if level > 0 else grid1):
+            elif loc_from.imag*1j + loc_to.real in (grid2 if level > 0 else grid1):
                 this_path = vert + hor + (0,)
             else:
                 this_path = hor + vert + (0,)
 
             dist += path_cost(this_path, level + 1, max_lvl)  # What does it cost to do this_path for next robot?
-            loc = pth_loc
         return int(dist)
 
 
@@ -53,14 +50,14 @@ def run_all(example_run: Union[int, bool]):
 
     total_complexity = 0
     for code in data:
-        code = tuple(x if x!='A' else 0 for x in code)
+        code = tuple(x if x!= 'A' else 0 for x in code)
         len_code = path_cost(code, 0, 2)
         total_complexity += len_code * int("".join(code[:-1]))
     result_part1 = total_complexity
 
     total_complexity = 0
     for code in data:
-        code = tuple(x if x!='A' else 0 for x in code)
+        code = tuple(x if x!= 'A' else 0 for x in code)
         len_code = path_cost(code, 0, 25)
         total_complexity += len_code * int("".join(code[:-1]))
     result_part2 = total_complexity
