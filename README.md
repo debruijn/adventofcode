@@ -23,7 +23,7 @@ An early example of this can be found in the aoc_2018 folder.
 - 2021: Done (except for using aocd)
 - 2022: Done (except for using aocd)
 - 2023: Done
-- 2024: Doing
+- 2024: Done
 
 ## General todo's
 Outside simply doing the coding challenges in a reasonable run time, you can (but might not) find other commits as well:
