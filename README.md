@@ -23,7 +23,7 @@ An early example of this can be found in the aoc_2018 folder.
 - 2021: Done (except for using aocd)
 - 2022: Done (except for using aocd)
 - 2023: Done
-- 2024: Doing
+- 2024: Done
 
 ## General todo's
 Outside simply doing the coding challenges in a reasonable run time, you can (but might not) find other commits as well:
@@ -31,3 +31,5 @@ Outside simply doing the coding challenges in a reasonable run time, you can (bu
 - More utility functions for common operations or data structures
 - Redo days from 2021/2022 that use numpy without numpy
 - Redo (more) days in other languages I might want to learn, like Rust or Go, or calling those implementations in Python
+  - While I might still add more experimentation for calling another language from Python, my general AoC work in other
+  languages will now be in a new repo: [more-adventofcode](https://github.com/debruijn/more-adventofcode).
