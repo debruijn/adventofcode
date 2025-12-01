@@ -1,6 +1,6 @@
-DAY=25
+DAY=1
 
-YEAR=2024
+YEAR=2025
 N_EXAMPLES=1
 
 create_year_folder:
