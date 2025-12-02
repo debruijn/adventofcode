@@ -2,34 +2,17 @@ from typing import Union
 from util.util import ProcessInput, run_day
 
 
+def run_part(data, part):
 
-
-
-def run_all(example_run: Union[int, bool]):
-
-    data = ProcessInput(example_run=example_run, day=2, year=2025).data
-    data = data[0].split(',')
-
-    invalids_pt1 = set()
-    for row in data:
-        start, end = row.split('-')
-        start, end = int(start), int(end)
-        for num in range(start, end+1):
-            str_num = str(num)
-            if len(str_num) % 2 == 1:
-                continue
-            half_str_len = int(len(str_num)/2)
-            if str_num[:half_str_len] == str_num[half_str_len:]:
-                invalids_pt1.update({num})
-
-    invalids_pt2 = set()
+    max_n = 10 if part == 2 else 2
+    invalids = set()
     for row in data:
         start, end = row.split('-')
         start, end = int(start), int(end)
         for num in range(start, end+1):
             str_num = str(num)
 
-            for n in range(2, 11):
+            for n in range(2, max_n+1):
                 if len(str_num) % n != 0:
                     continue
                 cut_str_len = int(len(str_num)/ n)
@@ -41,8 +24,18 @@ def run_all(example_run: Union[int, bool]):
                     else:
                         break
                 else:
-                    invalids_pt2.update({num})
+                    invalids.update({num})
 
+    return invalids
+
+
+def run_all(example_run: Union[int, bool]):
+
+    data = ProcessInput(example_run=example_run, day=2, year=2025).data
+    data = data[0].split(',')
+
+    invalids_pt1 = run_part(data, part=1)
+    invalids_pt2 = run_part(data, part=2)
 
     result_part1 = sum(invalids_pt1)
     result_part2 = sum(invalids_pt2)
