@@ -36,7 +36,5 @@ def run_all(example_run: Union[int, bool]):
 
     return result_part1, result_part2, extra_out
 
-# 6889 too high
-# 6658 too low
 if __name__ == "__main__":
     run_day(run_all, [1])
