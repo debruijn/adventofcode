@@ -19,6 +19,7 @@ parfor = "*"
 browser-cookie3 = "*"
 rich = "*"
 aocd-example-parser = "*"
+intervalues = "*"
 
 [requires]
 python_version = "3.10"
