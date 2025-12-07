@@ -43,7 +43,7 @@ def run_all(example_run: Union[int, bool]):
                 break
             rw -= 1
 
-    result_part1 = len(count.keys())  # Take set to deduplicate double-counting
+    result_part1 = len(count.keys())
     result_part2 = final_count
 
     extra_out = {'Size of grid': (len(data), len(data[0])),
