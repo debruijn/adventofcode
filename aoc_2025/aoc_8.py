@@ -11,7 +11,6 @@ def run_all(example_run: Union[int, bool]):
     # Process data into circuits and shortest distances
     boxes = [tuple([int(y) for y in x.split(',')]) for x in data]
     circuits = [{box} for box in boxes]
-
     distances = [(sum([(i[k] - j[k]) ** 2 for k in range(3)]), i, j) for i, j in combinations(boxes, 2)]
     heapq.heapify(distances)
 
@@ -20,9 +19,8 @@ def run_all(example_run: Union[int, bool]):
     size_circuits = 0,0,0
     final_connections = ([0], [0])
 
-    # Loop over the sorted distances
+    # Loop over the heaped distances
     for n in range(len(distances)):
-
         dist = heapq.heappop(distances)
 
         # For both elements, check in which circuit they are - if the same circuit, skip iteration
