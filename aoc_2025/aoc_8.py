@@ -1,3 +1,4 @@
+import heapq
 from itertools import combinations
 from typing import Union
 from util.util import ProcessInput, run_day
@@ -10,7 +11,9 @@ def run_all(example_run: Union[int, bool]):
     # Process data into circuits and shortest distances
     boxes = [tuple([int(y) for y in x.split(',')]) for x in data]
     circuits = [{box} for box in boxes]
-    distances = sorted([(sum([(i[k] - j[k]) ** 2 for k in range(3)]), i, j) for i, j in combinations(boxes, 2)])
+
+    distances = [(sum([(i[k] - j[k]) ** 2 for k in range(3)]), i, j) for i, j in combinations(boxes, 2)]
+    heapq.heapify(distances)
 
     # Other variable declarations
     N = 1000 if not example_run else 10
@@ -18,7 +21,9 @@ def run_all(example_run: Union[int, bool]):
     final_connections = ([0], [0])
 
     # Loop over the sorted distances
-    for n, dist in enumerate(distances):
+    for n in range(len(distances)):
+
+        dist = heapq.heappop(distances)
 
         # For both elements, check in which circuit they are - if the same circuit, skip iteration
         i, j = dist[1], dist[2]
@@ -46,9 +51,9 @@ def run_all(example_run: Union[int, bool]):
     result_part2 = final_connections[0][0] * final_connections[1][0]
 
     extra_out = {'Number of boxes in input': len(data),
-                 'Number of connections possible': len(distances),
-                 'Shortest distances': distances[0][0],
-                 'Longest distance': distances[-1][0]}
+                 'Number of connections possible': int(len(data)*(len(data)-1)/2),
+                 'Number of connections used': int(len(data)*(len(data)-1)/2) - len(distances),
+                 'Number of connections left over': len(distances)}
 
     return result_part1, result_part2, extra_out
 
