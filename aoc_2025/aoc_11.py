@@ -60,6 +60,13 @@ def run_all(example_run: Union[int, bool]):
         # From start to end, either go via dac and then fft or first fft and then dac.
         for x, y in permutations(['dac', 'fft'], 2):
             count += get_count(start, x) * get_count(x, y) * get_count(y, end)
+
+        # In theory, this would speed-up by checking the middle part: we can only go from dag to fft or the other way
+        # (otherwise we'd have a cycle and thus infinite number of routes), so for the one that has 0 options, we can
+        # skip the other 2 steps.
+        # But because of the cache this doesn't matter: we will explore the other 2 steps anyway as part of the other
+        # solution, and these will be stored in the cache, so it is exactly as fast to leave it in.
+
     else:
         count = "N/A"
     result_part2 = count
