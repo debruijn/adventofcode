@@ -66,7 +66,8 @@ def run_all(example_run: Union[int, bool]):
 
     extra_out = {'Number of devices in input': len(data),
                  'Biggest list of outputs for one device': max(len(x) for x in data_dict.values()),
-                 'Count of most common output across devices': max(len(x) for x in rev_dict.values())}
+                 'Count of most common output across devices': max(len(x) for x in rev_dict.values()),
+                 'Size of cache': get_count.cache_info().currsize}
 
     return result_part1, result_part2, extra_out
 
